@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Opportunities - SportsIn</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="bg-white shadow-md fixed top-0 left-0 right-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <a href="index.html" class="text-2xl font-bold" style="color: #1e3a8a;">SportsIn</a>
+                <div class="flex items-center space-x-6">
+                    <a href="dashboard.html" class="navbar-link py-5 text-sm font-medium text-gray-500 hover:text-gray-900">Feed</a>
+                    <a href="explore.html" class="navbar-link py-5 text-sm font-medium text-gray-500 hover:text-gray-900">Explore</a>
+                    <a href="opportunities.html" class="navbar-link active py-5 text-sm font-medium text-gray-500 hover:text-gray-900">Opportunities</a>
+                    <a href="news.html" class="navbar-link py-5 text-sm font-medium text-gray-500 hover:text-gray-900">News</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pt-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div class="lg:col-span-1">
+                <div class="card sticky top-24">
+                    <h3 class="text-xl font-bold mb-4" style="color: #1e3a8a;">Post Opportunity</h3>
+                    <form class="space-y-4">
+                        <input type="text" placeholder="Job Title" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <input type="text" placeholder="Organization" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <input type="text" placeholder="Location" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <textarea rows="4" placeholder="Description..." class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                        <button type="submit" class="w-full btn-primary py-3 rounded-lg font-bold">Post Opportunity</button>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="lg:col-span-2">
+                <h2 class="text-2xl font-bold mb-6" style="color: #1e3a8a;">Latest Opportunities</h2>
+                <div id="opportunities-container">
+                    <div class="card text-center py-8">
+                        <h3 class="text-xl font-semibold text-gray-600 mb-2">No opportunities posted yet</h3>
+                        <p class="text-gray-500">Be the first to post a job opportunity!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            loadOpportunities();
+            
+            // Post opportunity form
+            const form = document.querySelector('form');
+            if (form) {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const currentUser = JSON.parse(localStorage.getItem('sportsin_currentUser'));
+                    if (!currentUser) {
+                        alert('Please login to post opportunities');
+                        return;
+                    }
+                    
+                    const formData = new FormData(form);
+                    const opportunity = {
+                        id: Date.now(),
+                        title: form.querySelector('input[placeholder="Job Title"]').value,
+                        organization: form.querySelector('input[placeholder="Organization"]').value,
+                        location: form.querySelector('input[placeholder="Location"]').value,
+                        description: form.querySelector('textarea').value,
+                        postedBy: currentUser.fullName,
+                        postedById: currentUser.id,
+                        timestamp: new Date().toISOString()
+                    };
+                    
+                    const opportunities = JSON.parse(localStorage.getItem('sportsin_opportunities')) || [];
+                    opportunities.unshift(opportunity);
+                    localStorage.setItem('sportsin_opportunities', JSON.stringify(opportunities));
+                    
+                    alert('Opportunity posted successfully!');
+                    form.reset();
+                    loadOpportunities();
+                });
+            }
+        });
+        
+        function loadOpportunities() {
+            const opportunities = JSON.parse(localStorage.getItem('sportsin_opportunities')) || [];
+            const container = document.getElementById('opportunities-container');
+            
+            if (opportunities.length === 0) {
+                container.innerHTML = `
+                    <div class="card text-center py-8">
+                        <h3 class="text-xl font-semibold text-gray-600 mb-2">No opportunities posted yet</h3>
+                        <p class="text-gray-500">Be the first to post a job opportunity!</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = opportunities.map(opp => `
+                <div class="card mb-6">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center font-bold text-white">${opp.organization.charAt(0)}</div>
+                        <div class="ml-3">
+                            <h3 class="font-bold text-lg">${opp.organization}</h3>
+                            <p class="text-sm text-gray-500">Posted by ${opp.postedBy} • ${new Date(opp.timestamp).toLocaleDateString()}</p>
+                        </div>
+                    </div>
+                    <h4 class="text-xl font-bold mb-2">${opp.title}</h4>
+                    <p class="text-gray-600 mb-3">${opp.location}</p>
+                    <p class="text-gray-700 mb-4">${opp.description}</p>
+                    <button class="btn-primary px-6 py-2 rounded-lg" onclick="alert('Contact ${opp.postedBy} for more details')">Apply Now</button>
+                </div>
+            `).join('');
+        }
+    </script>
+    <script src="notifications.js"></script>
+    <script src="api.js"></script>
+    <script src="app.js"></script>
+    <script src="admin-page-settings.js"></script>
+</body>
+</html>

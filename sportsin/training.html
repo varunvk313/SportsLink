@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Training & Coaching - SportsIn</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="bg-white shadow-md fixed top-0 left-0 right-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <a href="index.html" class="text-2xl font-bold" style="color: #1e3a8a;">SportsIn</a>
+                <div class="flex items-center space-x-6">
+                    <a href="dashboard.html" class="navbar-link py-5 text-sm font-medium text-gray-500 hover:text-gray-900">Feed</a>
+                    <a href="explore.html" class="navbar-link py-5 text-sm font-medium text-gray-500 hover:text-gray-900">Explore</a>
+                    <a href="opportunities.html" class="navbar-link py-5 text-sm font-medium text-gray-500 hover:text-gray-900">Jobs</a>
+                    <a href="events.html" class="navbar-link py-5 text-sm font-medium text-gray-500 hover:text-gray-900">Events</a>
+                    <a href="training.html" class="navbar-link active py-5 text-sm font-medium text-gray-500 hover:text-gray-900">Training</a>
+                    <a href="news.html" class="navbar-link py-5 text-sm font-medium text-gray-500 hover:text-gray-900">News</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pt-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+            <div class="lg:col-span-1">
+                <div class="card mb-6">
+                    <h3 class="text-lg font-bold mb-4" style="color: #1e3a8a;">Training Categories</h3>
+                    <div class="space-y-2">
+                        <button onclick="filterTraining('all')" class="w-full text-left px-3 py-2 rounded hover:bg-gray-100 training-filter active">All Training</button>
+                        <button onclick="filterTraining('workout')" class="w-full text-left px-3 py-2 rounded hover:bg-gray-100 training-filter">Workout Plans</button>
+                        <button onclick="filterTraining('technique')" class="w-full text-left px-3 py-2 rounded hover:bg-gray-100 training-filter">Technique Tips</button>
+                        <button onclick="filterTraining('nutrition')" class="w-full text-left px-3 py-2 rounded hover:bg-gray-100 training-filter">Nutrition</button>
+                        <button onclick="filterTraining('mental')" class="w-full text-left px-3 py-2 rounded hover:bg-gray-100 training-filter">Mental Training</button>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3 class="text-lg font-bold mb-4" style="color: #1e3a8a;">Share Training Content</h3>
+                    <form id="training-form" class="space-y-3">
+                        <input type="text" placeholder="Training Title" required class="w-full px-3 py-2 border rounded-lg text-sm">
+                        <select required class="w-full px-3 py-2 border rounded-lg text-sm">
+                            <option value="">Category</option>
+                            <option value="workout">Workout Plan</option>
+                            <option value="technique">Technique Tip</option>
+                            <option value="nutrition">Nutrition</option>
+                            <option value="mental">Mental Training</option>
+                        </select>
+                        <select required class="w-full px-3 py-2 border rounded-lg text-sm">
+                            <option value="">Sport</option>
+                            <option value="Football">Football</option>
+                            <option value="Basketball">Basketball</option>
+                            <option value="Tennis">Tennis</option>
+                            <option value="Cricket">Cricket</option>
+                            <option value="Swimming">Swimming</option>
+                            <option value="Athletics">Athletics</option>
+                        </select>
+                        <textarea rows="4" placeholder="Training content, tips, or workout details..." required class="w-full px-3 py-2 border rounded-lg text-sm"></textarea>
+                        <button type="submit" class="w-full btn-primary py-2 rounded-lg font-bold text-sm">Share Training</button>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="lg:col-span-3">
+                <h2 class="text-2xl font-bold mb-6" style="color: #1e3a8a;">Training & Coaching Hub</h2>
+                
+                <div id="training-container">
+                    <!-- Training content will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        let currentFilter = 'all';
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            loadTrainingContent();
+            
+            document.getElementById('training-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const currentUser = JSON.parse(localStorage.getItem('sportsin_currentUser'));
+                if (!currentUser) {
+                    alert('Please login to share training content');
+                    return;
+                }
+                
+                const training = {
+                    id: Date.now(),
+                    title: e.target.querySelector('input').value,
+                    category: e.target.querySelectorAll('select')[0].value,
+                    sport: e.target.querySelectorAll('select')[1].value,
+                    content: e.target.querySelector('textarea').value,
+                    author: currentUser.fullName,
+                    authorId: currentUser.id,
+                    authorType: currentUser.userType,
+                    likes: [],
+                    saves: [],
+                    timestamp: new Date().toISOString()
+                };
+                
+                const trainings = JSON.parse(localStorage.getItem('sportsin_training')) || [];
+                trainings.unshift(training);
+                localStorage.setItem('sportsin_training', JSON.stringify(trainings));
+                
+                alert('Training content shared successfully!');
+                e.target.reset();
+                loadTrainingContent();
+            });
+        });
+        
+        function filterTraining(category) {
+            currentFilter = category;
+            document.querySelectorAll('.training-filter').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            loadTrainingContent();
+        }
+        
+        function loadTrainingContent() {
+            const trainings = JSON.parse(localStorage.getItem('sportsin_training')) || [];
+            const container = document.getElementById('training-container');
+            
+            const filteredTrainings = currentFilter === 'all' ? trainings : trainings.filter(t => t.category === currentFilter);
+            
+            if (filteredTrainings.length === 0) {
+                container.innerHTML = `
+                    <div class="card text-center py-8">
+                        <h3 class="text-xl font-semibold text-gray-600 mb-2">No training content yet</h3>
+                        <p class="text-gray-500">Share your training knowledge with the community!</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = filteredTrainings.map(training => `
+                <div class="card mb-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center">
+                            <div class="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center font-bold text-white">
+                                ${training.author.charAt(0)}
+                            </div>
+                            <div class="ml-3">
+                                <h3 class="font-bold">${training.author}</h3>
+                                <p class="text-sm text-gray-500">${training.authorType} • ${training.sport}</p>
+                            </div>
+                        </div>
+                        <span class="px-3 py-1 text-xs rounded-full ${getCategoryColor(training.category)}">${getCategoryName(training.category)}</span>
+                    </div>
+                    
+                    <h4 class="text-lg font-bold mb-3">${training.title}</h4>
+                    <div class="text-gray-700 mb-4 whitespace-pre-line">${training.content}</div>
+                    
+                    <div class="flex justify-between items-center pt-4 border-t">
+                        <div class="flex space-x-4">
+                            <button onclick="likeTraining(${training.id})" class="flex items-center space-x-1 text-gray-500 hover:text-blue-600">
+                                <span>👍</span>
+                                <span>${training.likes.length} likes</span>
+                            </button>
+                            <button onclick="saveTraining(${training.id})" class="flex items-center space-x-1 text-gray-500 hover:text-green-600">
+                                <span>💾</span>
+                                <span>Save</span>
+                            </button>
+                        </div>
+                        <span class="text-sm text-gray-500">${new Date(training.timestamp).toLocaleDateString()}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        function getCategoryColor(category) {
+            const colors = {
+                'workout': 'bg-red-100 text-red-800',
+                'technique': 'bg-blue-100 text-blue-800',
+                'nutrition': 'bg-green-100 text-green-800',
+                'mental': 'bg-purple-100 text-purple-800'
+            };
+            return colors[category] || 'bg-gray-100 text-gray-800';
+        }
+        
+        function getCategoryName(category) {
+            const names = {
+                'workout': 'Workout',
+                'technique': 'Technique',
+                'nutrition': 'Nutrition',
+                'mental': 'Mental'
+            };
+            return names[category] || category;
+        }
+        
+        function likeTraining(trainingId) {
+            const currentUser = JSON.parse(localStorage.getItem('sportsin_currentUser'));
+            if (!currentUser) {
+                alert('Please login to like training content');
+                return;
+            }
+            
+            const trainings = JSON.parse(localStorage.getItem('sportsin_training')) || [];
+            const trainingIndex = trainings.findIndex(t => t.id === trainingId);
+            
+            if (trainingIndex !== -1) {
+                if (!trainings[trainingIndex].likes.includes(currentUser.id)) {
+                    trainings[trainingIndex].likes.push(currentUser.id);
+                    localStorage.setItem('sportsin_training', JSON.stringify(trainings));
+                    loadTrainingContent();
+                }
+            }
+        }
+        
+        function saveTraining(trainingId) {
+            const currentUser = JSON.parse(localStorage.getItem('sportsin_currentUser'));
+            if (!currentUser) {
+                alert('Please login to save training content');
+                return;
+            }
+            
+            const savedTrainings = JSON.parse(localStorage.getItem(`saved_training_${currentUser.id}`)) || [];
+            if (!savedTrainings.includes(trainingId)) {
+                savedTrainings.push(trainingId);
+                localStorage.setItem(`saved_training_${currentUser.id}`, JSON.stringify(savedTrainings));
+                alert('Training content saved!');
+            } else {
+                alert('Already saved!');
+            }
+        }
+    </script>
+    <script src="app.js"></script>
+</body>
+</html>

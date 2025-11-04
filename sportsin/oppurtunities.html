@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sports Opportunities | SportsIn</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Firebase SDK and Logic -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getFirestore, collection, addDoc, onSnapshot, serverTimestamp, getDocs, doc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        
+        // --- GLOBAL STATE & MOCK SETUP (for standalone use) ---
+        // IMPORTANT: In a live environment, __app_id, __firebase_config, and __initial_auth_token are provided globally.
+        // These are mocked here for standalone testing purposes.
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'standalone-opps-app-id';
+        let firebaseConfig = {};
+        try {
+            firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
+        } catch(e) {
+            console.error("Failed to parse Firebase configuration:", e);
+        }
+        
+        let db = null;
+        let userId = 'demo-user-123';
+        const userProfile = { name: "SportsIn Demo Poster" };
+        let opportunities = [];
+
+        const contentView = document.getElementById("content-view");
+        const notificationArea = document.getElementById('notification-area');
+
+        // Initialize Firebase
+        if (Object.keys(firebaseConfig).length > 0 && firebaseConfig.apiKey) {
+            const app = initializeApp(firebaseConfig);
+            db = getFirestore(app);
+            const auth = getAuth(app);
+            signInAnonymously(auth).then(res => {
+                userId = res.user.uid;
+            }).catch(err => {
+                console.error("Anonymous sign-in failed:", err);
+            });
+        } else {
+            console.warn("Firebase configuration missing. Posting/Listing will not be persistent or real-time.");
+        }
+
+        const APP_PATHS = {
+            // Uses the public path for shared opportunities
+            getOpportunitiesCollection: () => collection(db, 'artifacts', appId, 'public', 'data', 'sportsin_opportunities'),
+        };
+
+        // --- UTILITY FUNCTIONS ---
+
+        // Utility to show temporary notification (instead of alert)
+        function showNotification(message, isError = false) {
+            notificationArea.textContent = message;
+            notificationArea.className = `mb-4 p-3 rounded-lg font-medium text-white ${isError ? 'bg-red-500' : 'bg-green-500'}`;
+            notificationArea.style.display = 'block';
+            setTimeout(() => {
+                notificationArea.style.display = 'none';
+            }, 4000);
+        }
+
+        // Utility function to generate the HTML for a single opportunity card
+        function renderOpportunityCard(opp) {
+            const timeString = opp.timestamp ? new Date(opp.timestamp.seconds * 1000).toLocaleDateString() : 'Unknown Date';
+
+            return `
+                <div class="bg-white p-6 rounded-xl shadow-lg border-l-4 border-green-500 mb-6 hover:shadow-xl transition-all duration-200">
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">${opp.title}</h3>
+                    <div class="flex flex-wrap text-sm text-gray-600 mb-3 space-x-4">
+                        <span class="flex items-center"><i data-lucide="banknote" class="w-4 h-4 mr-1 text-green-500"></i> ${opp.organization}</span>
+                        <span class="flex items-center"><i data-lucide="map-pin" class="w-4 h-4 mr-1 text-red-500"></i> ${opp.location}</span>
+                        <span class="flex items-center"><i data-lucide="clock" class="w-4 h-4 mr-1 text-gray-400"></i> Posted: ${timeString}</span>
+                    </div>
+                    <p class="text-gray-700 mb-4 leading-relaxed">${opp.description}</p>
+
+                    <div class="flex items-center justify-end">
+                        <a href="#" class="inline-block bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded-full transition duration-150 shadow-md">
+                            Apply / Learn More
+                        </a>
+                    </div>
+                </div>
+            `;
+        }
+
+        // --- MAIN OPPORTUNITY LOGIC ---
+
+        // Function to render the entire Opportunities page content
+        function renderOpportunities(opportunities = []) {
+            const opportunityCards = opportunities.map(renderOpportunityCard).join("");
+            
+            contentView.innerHTML = `
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <!-- Post Opportunity Form -->
+                    <div class="lg:col-span-1">
+                        <div class="bg-white p-6 rounded-xl shadow-lg sticky top-8">
+                            <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+                                <i data-lucide="plus-square" class="w-5 h-5 mr-2 text-green-600"></i> Post Opportunity
+                            </h3>
+                            <form id="opportunity-form">
+                                <input type="text" name="opp-title" placeholder="Title (e.g., Scout, Tryout, Internship)" required class="w-full p-3 border border-gray-300 rounded-lg mb-3 focus:ring-green-500 focus:border-green-500">
+                                <input type="text" name="opp-org" placeholder="Organization/Team" required class="w-full p-3 border border-gray-300 rounded-lg mb-3 focus:ring-green-500 focus:border-green-500">
+                                <input type="text" name="opp-loc" placeholder="Location" required class="w-full p-3 border border-gray-300 rounded-lg mb-3 focus:ring-green-500 focus:border-green-500">
+                                <textarea name="opp-desc" rows="4" placeholder="Description and requirements..." required class="w-full p-3 border border-gray-300 rounded-lg mb-4 resize-y focus:ring-green-500 focus:border-green-500"></textarea>
+                                <button type="submit" class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-2 rounded-full transition duration-150 shadow-md">
+                                    Publish Listing
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                    
+                    <!-- Opportunity Listings -->
+                    <div class="lg:col-span-2">
+                        <h2 class="text-2xl font-bold text-gray-800 mb-6">Latest Sports Opportunities</h2>
+                        <div id="opportunities-list">
+                            ${
+                                opportunityCards.length > 0
+                                    ? opportunityCards
+                                    : `<p class="text-gray-500 p-8 bg-white rounded-xl shadow-lg">
+                                        No opportunities currently listed. Post one to get started!
+                                    </p>`
+                            }
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Attach event listener to the form AFTER rendering the HTML
+            document.getElementById('opportunity-form').addEventListener('submit', createOpportunity);
+            lucide.createIcons();
+        }
+
+        // Firestore handling for creating a new opportunity
+        async function createOpportunity(event) {
+            event.preventDefault();
+
+            if (!db) {
+                showNotification("❌ Database not connected. Cannot post opportunity.", true);
+                return;
+            }
+
+            const form = document.getElementById('opportunity-form');
+            const title = form.elements["opp-title"].value.trim();
+            const organization = form.elements["opp-org"].value.trim();
+            const location = form.elements["opp-loc"].value.trim();
+            const description = form.elements["opp-desc"].value.trim();
+
+            if (!title || !organization || !description) {
+                showNotification("Please fill out all required fields.", true);
+                return;
+            }
+
+            const opportunitiesColRef = APP_PATHS.getOpportunitiesCollection();
+            
+            try {
+                await addDoc(opportunitiesColRef, {
+                    title,
+                    organization,
+                    location,
+                    description,
+                    postedBy: userProfile.name || "Admin",
+                    timestamp: serverTimestamp(),
+                });
+
+                form.reset();
+                showNotification("✅ Opportunity posted successfully!");
+            } catch (error) {
+                console.error("Error posting opportunity:", error);
+                showNotification(`❌ Failed to post: ${error.message}`, true);
+            }
+        }
+
+        // Load opportunities from Firestore with real-time listener
+        function setupOpportunitiesListener() {
+            if (!db) {
+                renderOpportunities([]);
+                return;
+            }
+
+            const opportunitiesColRef = APP_PATHS.getOpportunitiesCollection();
+            
+            // Use onSnapshot for real-time updates
+            onSnapshot(opportunitiesColRef, (snapshot) => {
+                opportunities = [];
+                snapshot.forEach(doc => opportunities.push({ id: doc.id, ...doc.data() }));
+                
+                // Sort by timestamp DESC (must be done client-side)
+                opportunities.sort((a, b) => {
+                    const timeA = a.timestamp?.seconds || 0;
+                    const timeB = b.timestamp?.seconds || 0;
+                    return timeB - timeA;
+                });
+
+                renderOpportunities(opportunities);
+
+                // Only add sample data if the collection is empty
+                if (snapshot.empty) checkAndAddSampleOpportunity(); 
+            }, (error) => {
+                console.error("Error listening to opportunities:", error);
+                showNotification("❌ Error loading opportunities data.", true);
+                renderOpportunities([]);
+            });
+        }
+
+        // Add sample data if collection empty (using getDocs for non-realtime check)
+        async function checkAndAddSampleOpportunity() {
+            if (!db) return;
+            const opportunitiesColRef = APP_PATHS.getOpportunitiesCollection();
+
+            const snapshot = await getDocs(opportunitiesColRef);
+            if (!snapshot.empty) return;
+
+            await addDoc(opportunitiesColRef, {
+                title: "Head Coach - High School Soccer Team",
+                organization: "Community Sports Academy",
+                location: "Local Region",
+                description: "Seeking a passionate and experienced soccer coach to lead our U18 boys team. Must have valid coaching license and a commitment to player development.",
+                postedBy: "SportsIn Admin",
+                timestamp: serverTimestamp(),
+            });
+        }
+
+        // --- Application Startup ---
+        document.addEventListener("DOMContentLoaded", () => {
+            setupOpportunitiesListener();
+        });
+    </script>
+</head>
+
+<body class="bg-gray-100 min-h-screen font-sans">
+    <div id="notification-area" class="fixed inset-x-0 top-0 mt-4 mx-auto max-w-sm hidden"></div>
+
+    <nav class="bg-white shadow-md fixed top-0 left-0 right-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <a href="index.html" class="text-2xl font-bold" style="color: #1e3a8a;">SportsIn</a>
+                <div class="flex items-center space-x-6">
+                    <a href="dashboard.html" class="navbar-link py-5 text-sm font-medium text-gray-500 hover:text-gray-900">Feed</a>
+                    <a href="explore.html" class="navbar-link py-5 text-sm font-medium text-gray-500 hover:text-gray-900">Explore</a>
+                    <a href="opportunities.html" class="navbar-link active py-5 text-sm font-medium text-gray-500 hover:text-gray-900">Opportunities</a>
+                    <a href="news.html" class="navbar-link py-5 text-sm font-medium text-gray-500 hover:text-gray-900">News</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main id="content-view" class="pt-24 p-8 max-w-6xl mx-auto"></main>
+
+<!-- Integrate shared JS logic -->
+<script src="feed_page_logic.js"></script>
+</body>
+</html>

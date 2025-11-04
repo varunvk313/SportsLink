@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sports Marketplace - SportsIn</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="bg-white shadow-md fixed top-0 left-0 right-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <a href="index.html" class="text-2xl font-bold" style="color: #1e3a8a;">SportsIn</a>
+                <div class="flex items-center space-x-6">
+                    <a href="dashboard.html" class="navbar-link py-5 text-sm font-medium text-gray-500 hover:text-gray-900">Feed</a>
+                    <a href="explore.html" class="navbar-link py-5 text-sm font-medium text-gray-500 hover:text-gray-900">Explore</a>
+                    <a href="opportunities.html" class="navbar-link py-5 text-sm font-medium text-gray-500 hover:text-gray-900">Jobs</a>
+                    <a href="events.html" class="navbar-link py-5 text-sm font-medium text-gray-500 hover:text-gray-900">Events</a>
+                    <a href="training.html" class="navbar-link py-5 text-sm font-medium text-gray-500 hover:text-gray-900">Training</a>
+                    <a href="marketplace.html" class="navbar-link active py-5 text-sm font-medium text-gray-500 hover:text-gray-900">Marketplace</a>
+                    <a href="news.html" class="navbar-link py-5 text-sm font-medium text-gray-500 hover:text-gray-900">News</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pt-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+            <div class="lg:col-span-1">
+                <div class="card mb-6">
+                    <h3 class="text-lg font-bold mb-4" style="color: #1e3a8a;">Categories</h3>
+                    <div class="space-y-2">
+                        <button onclick="filterItems('all')" class="w-full text-left px-3 py-2 rounded hover:bg-gray-100 category-filter active">All Items</button>
+                        <button onclick="filterItems('equipment')" class="w-full text-left px-3 py-2 rounded hover:bg-gray-100 category-filter">Equipment</button>
+                        <button onclick="filterItems('apparel')" class="w-full text-left px-3 py-2 rounded hover:bg-gray-100 category-filter">Apparel</button>
+                        <button onclick="filterItems('accessories')" class="w-full text-left px-3 py-2 rounded hover:bg-gray-100 category-filter">Accessories</button>
+                        <button onclick="filterItems('services')" class="w-full text-left px-3 py-2 rounded hover:bg-gray-100 category-filter">Services</button>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3 class="text-lg font-bold mb-4" style="color: #1e3a8a;">Sell Item</h3>
+                    <form id="item-form" class="space-y-3">
+                        <input type="text" placeholder="Item Name" required class="w-full px-3 py-2 border rounded-lg text-sm">
+                        <select required class="w-full px-3 py-2 border rounded-lg text-sm">
+                            <option value="">Category</option>
+                            <option value="equipment">Equipment</option>
+                            <option value="apparel">Apparel</option>
+                            <option value="accessories">Accessories</option>
+                            <option value="services">Services</option>
+                        </select>
+                        <select required class="w-full px-3 py-2 border rounded-lg text-sm">
+                            <option value="">Sport</option>
+                            <option value="Football">Football</option>
+                            <option value="Basketball">Basketball</option>
+                            <option value="Tennis">Tennis</option>
+                            <option value="Cricket">Cricket</option>
+                            <option value="Swimming">Swimming</option>
+                            <option value="Athletics">Athletics</option>
+                        </select>
+                        <input type="number" placeholder="Price ($)" required class="w-full px-3 py-2 border rounded-lg text-sm">
+                        <select required class="w-full px-3 py-2 border rounded-lg text-sm">
+                            <option value="">Condition</option>
+                            <option value="new">New</option>
+                            <option value="excellent">Excellent</option>
+                            <option value="good">Good</option>
+                            <option value="fair">Fair</option>
+                        </select>
+                        <textarea rows="3" placeholder="Description..." required class="w-full px-3 py-2 border rounded-lg text-sm"></textarea>
+                        <button type="submit" class="w-full btn-primary py-2 rounded-lg font-bold text-sm">List Item</button>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="lg:col-span-3">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold" style="color: #1e3a8a;">Sports Marketplace</h2>
+                    <div class="flex space-x-4">
+                        <input type="text" id="search-input" placeholder="Search items..." class="px-4 py-2 border rounded-lg">
+                        <select id="sort-select" class="px-4 py-2 border rounded-lg">
+                            <option value="newest">Newest First</option>
+                            <option value="price-low">Price: Low to High</option>
+                            <option value="price-high">Price: High to Low</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div id="items-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Items will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        let currentFilter = 'all';
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            loadItems();
+            
+            document.getElementById('item-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const currentUser = JSON.parse(localStorage.getItem('sportsin_currentUser'));
+                if (!currentUser) {
+                    alert('Please login to sell items');
+                    return;
+                }
+                
+                const item = {
+                    id: Date.now(),
+                    name: e.target.querySelector('input[placeholder="Item Name"]').value,
+                    category: e.target.querySelectorAll('select')[0].value,
+                    sport: e.target.querySelectorAll('select')[1].value,
+                    price: parseFloat(e.target.querySelector('input[type="number"]').value),
+                    condition: e.target.querySelectorAll('select')[2].value,
+                    description: e.target.querySelector('textarea').value,
+                    seller: currentUser.fullName,
+                    sellerId: currentUser.id,
+                    timestamp: new Date().toISOString(),
+                    sold: false
+                };
+                
+                const items = JSON.parse(localStorage.getItem('sportsin_marketplace')) || [];
+                items.unshift(item);
+                localStorage.setItem('sportsin_marketplace', JSON.stringify(items));
+                
+                alert('Item listed successfully!');
+                e.target.reset();
+                loadItems();
+            });
+            
+            document.getElementById('search-input').addEventListener('input', loadItems);
+            document.getElementById('sort-select').addEventListener('change', loadItems);
+        });
+        
+        function filterItems(category) {
+            currentFilter = category;
+            document.querySelectorAll('.category-filter').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            loadItems();
+        }
+        
+        function loadItems() {
+            const items = JSON.parse(localStorage.getItem('sportsin_marketplace')) || [];
+            const searchTerm = document.getElementById('search-input').value.toLowerCase();
+            const sortBy = document.getElementById('sort-select').value;
+            const container = document.getElementById('items-container');
+            
+            let filteredItems = items.filter(item => !item.sold);
+            
+            if (currentFilter !== 'all') {
+                filteredItems = filteredItems.filter(item => item.category === currentFilter);
+            }
+            
+            if (searchTerm) {
+                filteredItems = filteredItems.filter(item => 
+                    item.name.toLowerCase().includes(searchTerm) ||
+                    item.description.toLowerCase().includes(searchTerm) ||
+                    item.sport.toLowerCase().includes(searchTerm)
+                );
+            }
+            
+            // Sort items
+            filteredItems.sort((a, b) => {
+                switch(sortBy) {
+                    case 'price-low': return a.price - b.price;
+                    case 'price-high': return b.price - a.price;
+                    default: return new Date(b.timestamp) - new Date(a.timestamp);
+                }
+            });
+            
+            if (filteredItems.length === 0) {
+                container.innerHTML = `
+                    <div class="col-span-full">
+                        <div class="card text-center py-8">
+                            <h3 class="text-xl font-semibold text-gray-600 mb-2">No items found</h3>
+                            <p class="text-gray-500">Be the first to list sports equipment!</p>
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = filteredItems.map(item => `
+                <div class="card">
+                    <div class="aspect-w-16 aspect-h-9 mb-4">
+                        <div class="w-full h-48 bg-gray-200 rounded-lg flex items-center justify-center">
+                            <span class="text-4xl">${getSportEmoji(item.sport)}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-between items-start mb-2">
+                        <h3 class="font-bold text-lg">${item.name}</h3>
+                        <span class="text-lg font-bold text-green-600">$${item.price}</span>
+                    </div>
+                    
+                    <div class="flex items-center space-x-2 mb-2">
+                        <span class="px-2 py-1 text-xs rounded-full ${getCategoryColor(item.category)}">${item.category}</span>
+                        <span class="px-2 py-1 text-xs rounded-full ${getConditionColor(item.condition)}">${item.condition}</span>
+                    </div>
+                    
+                    <p class="text-gray-600 text-sm mb-3">${item.description}</p>
+                    
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <p class="text-sm font-medium">${item.seller}</p>
+                            <p class="text-xs text-gray-500">${item.sport}</p>
+                        </div>
+                        <button onclick="contactSeller(${item.id})" class="btn-primary px-4 py-2 rounded-lg text-sm">
+                            Contact Seller
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        function getSportEmoji(sport) {
+            const emojis = {
+                'Football': '⚽',
+                'Basketball': '🏀',
+                'Tennis': '🎾',
+                'Cricket': '🏏',
+                'Swimming': '🏊',
+                'Athletics': '🏃'
+            };
+            return emojis[sport] || '🏆';
+        }
+        
+        function getCategoryColor(category) {
+            const colors = {
+                'equipment': 'bg-blue-100 text-blue-800',
+                'apparel': 'bg-green-100 text-green-800',
+                'accessories': 'bg-purple-100 text-purple-800',
+                'services': 'bg-orange-100 text-orange-800'
+            };
+            return colors[category] || 'bg-gray-100 text-gray-800';
+        }
+        
+        function getConditionColor(condition) {
+            const colors = {
+                'new': 'bg-green-100 text-green-800',
+                'excellent': 'bg-blue-100 text-blue-800',
+                'good': 'bg-yellow-100 text-yellow-800',
+                'fair': 'bg-red-100 text-red-800'
+            };
+            return colors[condition] || 'bg-gray-100 text-gray-800';
+        }
+        
+        function contactSeller(itemId) {
+            const currentUser = JSON.parse(localStorage.getItem('sportsin_currentUser'));
+            if (!currentUser) {
+                alert('Please login to contact sellers');
+                return;
+            }
+            
+            const items = JSON.parse(localStorage.getItem('sportsin_marketplace')) || [];
+            const item = items.find(i => i.id === itemId);
+            
+            if (item) {
+                alert(`Contact ${item.seller} about "${item.name}"\\n\\nThis would normally open a messaging system or show contact details.`);
+            }
+        }
+    </script>
+    <script src="app.js"></script>
+</body>
+</html>

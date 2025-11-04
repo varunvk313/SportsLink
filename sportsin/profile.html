@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - SportsIn</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="bg-white shadow-md fixed top-0 left-0 right-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <a href="index.html" class="text-2xl font-bold" style="color: #1e3a8a;">SportsIn</a>
+                <div class="flex items-center space-x-6">
+                    <a href="dashboard.html" class="navbar-link py-5 text-sm font-medium text-gray-500 hover:text-gray-900">Feed</a>
+                    <a href="explore.html" class="navbar-link py-5 text-sm font-medium text-gray-500 hover:text-gray-900">Explore</a>
+                    <a href="opportunities.html" class="navbar-link py-5 text-sm font-medium text-gray-500 hover:text-gray-900">Opportunities</a>
+                    <a href="news.html" class="navbar-link py-5 text-sm font-medium text-gray-500 hover:text-gray-900">News</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pt-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div id="profile-content">
+            <!-- Profile content will be loaded here -->
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const userId = urlParams.get('id');
+            const currentUser = JSON.parse(localStorage.getItem('sportsin_currentUser'));
+            
+            if (!userId) {
+                // If no ID provided, show current user's profile
+                if (currentUser) {
+                    loadProfile(currentUser.id);
+                } else {
+                    window.location.href = 'login.html';
+                }
+            } else {
+                loadProfile(parseInt(userId));
+            }
+        });
+
+        function loadProfile(userId) {
+            const users = JSON.parse(localStorage.getItem('sportsin_users')) || [];
+            const posts = JSON.parse(localStorage.getItem('sportsin_posts')) || [];
+            const currentUser = JSON.parse(localStorage.getItem('sportsin_currentUser'));
+            
+            const user = users.find(u => u.id === userId);
+            if (!user) {
+                document.getElementById('profile-content').innerHTML = '<div class="text-center py-12"><h2 class="text-2xl font-bold text-gray-800">User not found</h2></div>';
+                return;
+            }
+
+            const userPosts = posts.filter(p => p.authorId === userId && p.status === 'approved');
+            const isOwnProfile = currentUser && currentUser.id === userId;
+            
+            // Initialize bio if not exists
+            if (!user.bio) {
+                user.bio = '';
+            }
+
+            document.getElementById('profile-content').innerHTML = `
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden mb-8">
+                    <div class="h-32 bg-gradient-to-r from-blue-500 to-blue-700"></div>
+                    <div class="px-6 pb-6">
+                        <div class="flex items-center -mt-16 mb-4">
+                            <div class="relative">
+                                <div id="profile-photo" class="w-32 h-32 bg-blue-600 rounded-full border-4 border-white flex items-center justify-center text-4xl font-bold text-white overflow-hidden">
+                                    ${user.profilePhoto ? `<img src="${user.profilePhoto}" alt="Profile" class="w-full h-full object-cover">` : user.fullName.charAt(0)}
+                                </div>
+                                ${isOwnProfile ? '<button onclick="uploadPhoto()" class="absolute bottom-0 right-0 bg-blue-600 text-white rounded-full p-2 hover:bg-blue-700">📷</button>' : ''}
+                                <input type="file" id="photo-input" accept="image/*" class="hidden" onchange="handlePhotoUpload(event)">
+                            </div>
+                            <div class="ml-6 mt-16">
+                                <h1 class="text-3xl font-bold text-gray-900">${user.fullName}</h1>
+                                <p class="text-lg text-gray-600">${user.userType} • ${user.sport}</p>
+                                <p class="text-sm text-gray-500">${user.location}</p>
+                            </div>
+                        </div>
+                        ${isOwnProfile ? '<button onclick="toggleEditMode()" id="edit-btn" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">Edit Profile</button>' : '<div class="space-x-2"><button onclick="connectUser(' + userId + ')" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">Connect</button><button onclick="messageUser(' + userId + ')" class="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700">Message</button></div>'}
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <div class="lg:col-span-2">
+                        <div class="bg-white rounded-lg shadow p-6 mb-6">
+                            <h2 class="text-xl font-bold mb-4">About</h2>
+                            <div id="about-view">
+                                <p class="text-gray-700">${user.bio || 'No bio available.'}</p>
+                            </div>
+                            <div id="about-edit" class="hidden">
+                                <textarea id="bio-input" class="w-full p-3 border rounded-lg" rows="4" placeholder="Tell us about yourself...">${user.bio || ''}</textarea>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-lg shadow p-6">
+                            <h2 class="text-xl font-bold mb-4">Recent Posts (${userPosts.length})</h2>
+                            <div class="space-y-4">
+                                ${userPosts.length > 0 ? userPosts.map(post => `
+                                    <div class="border-b pb-4">
+                                        <p class="text-gray-800 mb-2">${post.content}</p>
+                                        <p class="text-sm text-gray-500">${new Date(post.timestamp).toLocaleDateString()}</p>
+                                        <div class="flex items-center space-x-4 mt-2">
+                                            <span class="text-sm text-gray-500">👍 ${post.likes.length} likes</span>
+                                            <span class="text-sm text-gray-500">💬 ${post.comments.length} comments</span>
+                                        </div>
+                                    </div>
+                                `).join('') : '<p class="text-gray-500">No posts yet.</p>'}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="bg-white rounded-lg shadow p-6 mb-6">
+                            <h3 class="font-bold mb-4">Profile Info</h3>
+                            <div class="space-y-3">
+                                <div id="info-view">
+                                    <div>
+                                        <span class="text-sm text-gray-500">Email:</span>
+                                        <p class="font-medium">${user.email}</p>
+                                    </div>
+                                    <div>
+                                        <span class="text-sm text-gray-500">Sport:</span>
+                                        <p class="font-medium">${user.sport}</p>
+                                    </div>
+                                    <div>
+                                        <span class="text-sm text-gray-500">Type:</span>
+                                        <p class="font-medium">${user.userType}</p>
+                                    </div>
+                                    <div>
+                                        <span class="text-sm text-gray-500">Location:</span>
+                                        <p class="font-medium">${user.location}</p>
+                                    </div>
+                                </div>
+                                <div id="info-edit" class="hidden space-y-3">
+                                    <div>
+                                        <label class="text-sm text-gray-500">Sport:</label>
+                                        <select id="sport-input" class="w-full p-2 border rounded">
+                                            <option value="Football" ${user.sport === 'Football' ? 'selected' : ''}>Football</option>
+                                            <option value="Basketball" ${user.sport === 'Basketball' ? 'selected' : ''}>Basketball</option>
+                                            <option value="Tennis" ${user.sport === 'Tennis' ? 'selected' : ''}>Tennis</option>
+                                            <option value="Swimming" ${user.sport === 'Swimming' ? 'selected' : ''}>Swimming</option>
+                                            <option value="Athletics" ${user.sport === 'Athletics' ? 'selected' : ''}>Athletics</option>
+                                            <option value="Cricket" ${user.sport === 'Cricket' ? 'selected' : ''}>Cricket</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="text-sm text-gray-500">Type:</label>
+                                        <select id="type-input" class="w-full p-2 border rounded">
+                                            <option value="Professional Athlete" ${user.userType === 'Professional Athlete' ? 'selected' : ''}>Professional Athlete</option>
+                                            <option value="Amateur Athlete" ${user.userType === 'Amateur Athlete' ? 'selected' : ''}>Amateur Athlete</option>
+                                            <option value="Coach" ${user.userType === 'Coach' ? 'selected' : ''}>Coach</option>
+                                            <option value="Sports Manager" ${user.userType === 'Sports Manager' ? 'selected' : ''}>Sports Manager</option>
+                                            <option value="Sports Journalist" ${user.userType === 'Sports Journalist' ? 'selected' : ''}>Sports Journalist</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="text-sm text-gray-500">Location:</label>
+                                        <input type="text" id="location-input" class="w-full p-2 border rounded" value="${user.location}">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-lg shadow p-6">
+                            <h3 class="font-bold mb-4">Activity</h3>
+                            <div class="space-y-2 text-sm">
+                                <p class="text-gray-600">• ${userPosts.length} posts published</p>
+                                <p class="text-gray-600">• Member since ${new Date().getFullYear()}</p>
+                                <p class="text-gray-600">• ${user.userType} in ${user.sport}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            // Add edit mode functionality if it's own profile
+            if (isOwnProfile) {
+                window.currentEditUser = user;
+            }
+        }
+        
+        let isEditMode = false;
+        
+        function toggleEditMode() {
+            isEditMode = !isEditMode;
+            const editBtn = document.getElementById('edit-btn');
+            const aboutView = document.getElementById('about-view');
+            const aboutEdit = document.getElementById('about-edit');
+            const infoView = document.getElementById('info-view');
+            const infoEdit = document.getElementById('info-edit');
+            
+            if (isEditMode) {
+                editBtn.textContent = 'Save Changes';
+                editBtn.className = 'bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700';
+                aboutView.classList.add('hidden');
+                aboutEdit.classList.remove('hidden');
+                infoView.classList.add('hidden');
+                infoEdit.classList.remove('hidden');
+            } else {
+                saveProfile();
+            }
+        }
+        
+        function saveProfile() {
+            const bio = document.getElementById('bio-input').value;
+            const sport = document.getElementById('sport-input').value;
+            const userType = document.getElementById('type-input').value;
+            const location = document.getElementById('location-input').value;
+            
+            // Update user data
+            const users = JSON.parse(localStorage.getItem('sportsin_users')) || [];
+            const currentUser = JSON.parse(localStorage.getItem('sportsin_currentUser'));
+            
+            const userIndex = users.findIndex(u => u.id === currentUser.id);
+            if (userIndex !== -1) {
+                users[userIndex] = {
+                    ...users[userIndex],
+                    bio: bio,
+                    sport: sport,
+                    userType: userType,
+                    location: location
+                };
+                
+                localStorage.setItem('sportsin_users', JSON.stringify(users));
+                localStorage.setItem('sportsin_currentUser', JSON.stringify(users[userIndex]));
+                
+                // Reload profile
+                location.reload();
+            }
+        }
+        
+        function uploadPhoto() {
+            document.getElementById('photo-input').click();
+        }
+        
+        function handlePhotoUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const photoData = e.target.result;
+                
+                // Update user data with photo
+                const users = JSON.parse(localStorage.getItem('sportsin_users')) || [];
+                const currentUser = JSON.parse(localStorage.getItem('sportsin_currentUser'));
+                
+                const userIndex = users.findIndex(u => u.id === currentUser.id);
+                if (userIndex !== -1) {
+                    users[userIndex].profilePhoto = photoData;
+                    localStorage.setItem('sportsin_users', JSON.stringify(users));
+                    localStorage.setItem('sportsin_currentUser', JSON.stringify(users[userIndex]));
+                    
+                    // Update photo display
+                    document.getElementById('profile-photo').innerHTML = `<img src="${photoData}" alt="Profile" class="w-full h-full object-cover">`;
+                }
+            };
+            reader.readAsDataURL(file);
+        }
+        
+        function connectUser(userId) {
+            const currentUser = JSON.parse(localStorage.getItem('sportsin_currentUser'));
+            if (!currentUser) {
+                alert('Please login to connect');
+                return;
+            }
+            
+            const users = JSON.parse(localStorage.getItem('sportsin_users')) || [];
+            const userIndex = users.findIndex(u => u.id === currentUser.id);
+            
+            if (userIndex !== -1) {
+                if (!users[userIndex].connections) {
+                    users[userIndex].connections = [];
+                }
+                
+                if (!users[userIndex].connections.includes(userId)) {
+                    users[userIndex].connections.push(userId);
+                    localStorage.setItem('sportsin_users', JSON.stringify(users));
+                    localStorage.setItem('sportsin_currentUser', JSON.stringify(users[userIndex]));
+                    alert('Connection request sent!');
+                } else {
+                    alert('Already connected!');
+                }
+            }
+        }
+        
+        function messageUser(userId) {
+            const currentUser = JSON.parse(localStorage.getItem('sportsin_currentUser'));
+            if (!currentUser) {
+                alert('Please login to send messages');
+                return;
+            }
+            window.location.href = `messages.html?user=${userId}`;
+        }
+    </script>
+    <script src="app.js"></script>
+</body>
+</html>

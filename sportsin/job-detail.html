@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Details - SportsIn</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="bg-white shadow-md fixed top-0 left-0 right-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <a href="index.html" class="text-2xl font-bold" style="color: #1e3a8a;">SportsIn</a>
+                <div class="flex items-center space-x-6">
+                    <a href="dashboard.html" class="navbar-link py-5 text-sm font-medium text-gray-500 hover:text-gray-900">Feed</a>
+                    <a href="explore.html" class="navbar-link py-5 text-sm font-medium text-gray-500 hover:text-gray-900">Explore</a>
+                    <a href="opportunities.html" class="navbar-link py-5 text-sm font-medium text-gray-500 hover:text-gray-900">Opportunities</a>
+                    <a href="news.html" class="navbar-link py-5 text-sm font-medium text-gray-500 hover:text-gray-900">News</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pt-24 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="mb-4">
+            <a href="opportunities.html" class="text-blue-600 hover:underline">← Back to Opportunities</a>
+        </div>
+
+        <div class="card mb-8">
+            <div class="flex items-center mb-6">
+                <div class="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center font-bold text-white text-xl" id="company-logo">FC</div>
+                <div class="ml-4">
+                    <h1 class="text-3xl font-bold" id="job-title">Youth Academy Coach</h1>
+                    <p class="text-xl text-gray-600" id="company-name">Manchester United FC</p>
+                    <p class="text-gray-500" id="job-location">Manchester, UK • Full-time</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="md:col-span-2">
+                    <h2 class="text-2xl font-bold mb-4" style="color: #1e3a8a;">Job Description</h2>
+                    <div id="job-description" class="text-gray-700 space-y-4">
+                        <p>We are seeking an experienced youth coach for our U-16 development program. The successful candidate will work with talented young players to develop their technical skills, tactical understanding, and mental approach to the game.</p>
+                        
+                        <h3 class="text-lg font-semibold mt-6 mb-2">Key Responsibilities:</h3>
+                        <ul class="list-disc list-inside space-y-1">
+                            <li>Plan and deliver high-quality training sessions</li>
+                            <li>Develop individual player development plans</li>
+                            <li>Work closely with academy staff and parents</li>
+                            <li>Scout and identify potential talent</li>
+                            <li>Maintain detailed player progress records</li>
+                        </ul>
+
+                        <h3 class="text-lg font-semibold mt-6 mb-2">Requirements:</h3>
+                        <ul class="list-disc list-inside space-y-1">
+                            <li>UEFA B license (minimum)</li>
+                            <li>Previous academy coaching experience</li>
+                            <li>Strong communication skills</li>
+                            <li>Passion for youth development</li>
+                            <li>Clean DBS check required</li>
+                        </ul>
+
+                        <h3 class="text-lg font-semibold mt-6 mb-2">What We Offer:</h3>
+                        <ul class="list-disc list-inside space-y-1">
+                            <li>Competitive salary package</li>
+                            <li>Professional development opportunities</li>
+                            <li>Access to world-class facilities</li>
+                            <li>Career progression pathways</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="card bg-gray-50">
+                        <h3 class="text-lg font-bold mb-4">Apply Now</h3>
+                        <form id="application-form" class="space-y-4">
+                            <input type="text" placeholder="Full Name" required class="w-full px-3 py-2 border rounded-lg">
+                            <input type="email" placeholder="Email" required class="w-full px-3 py-2 border rounded-lg">
+                            <input type="tel" placeholder="Phone" class="w-full px-3 py-2 border rounded-lg">
+                            <textarea placeholder="Cover Letter" rows="4" class="w-full px-3 py-2 border rounded-lg"></textarea>
+                            <input type="file" accept=".pdf,.doc,.docx" class="w-full px-3 py-2 border rounded-lg">
+                            <button type="submit" class="w-full btn-primary py-3 rounded-lg font-bold">Submit Application</button>
+                        </form>
+                    </div>
+
+                    <div class="card mt-6">
+                        <h3 class="text-lg font-bold mb-4">Job Details</h3>
+                        <div class="space-y-2 text-sm">
+                            <div><strong>Posted:</strong> <span id="posted-date">2 hours ago</span></div>
+                            <div><strong>Type:</strong> Full-time</div>
+                            <div><strong>Experience:</strong> 3+ years</div>
+                            <div><strong>Salary:</strong> Competitive</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get job details from URL parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            const jobId = urlParams.get('id');
+            
+            // Load job details (mock data for demo)
+            const jobs = {
+                '1': {
+                    title: 'Youth Academy Coach',
+                    company: 'Manchester United FC',
+                    location: 'Manchester, UK • Full-time',
+                    logo: 'MU',
+                    postedBy: 'Sarah Johnson'
+                },
+                '2': {
+                    title: 'Data Analyst - Football',
+                    company: 'Sports Analytics Inc',
+                    location: 'London, UK • Remote',
+                    logo: 'SA',
+                    postedBy: 'Mike Chen'
+                }
+            };
+
+            const job = jobs[jobId] || jobs['1'];
+            
+            // Update page content
+            document.getElementById('job-title').textContent = job.title;
+            document.getElementById('company-name').textContent = job.company;
+            document.getElementById('job-location').textContent = job.location;
+            document.getElementById('company-logo').textContent = job.logo;
+
+            // Handle application form
+            document.getElementById('application-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                alert('Application submitted successfully! We will contact you soon.');
+                this.reset();
+            });
+        });
+    </script>
+    <script src="api.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News - SportsIn</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="bg-white shadow-md fixed top-0 left-0 right-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <a href="index.html" class="text-2xl font-bold" style="color: #1e3a8a;">SportsIn</a>
+                <div class="flex items-center space-x-6">
+                    <a href="dashboard.html" class="navbar-link py-5 text-sm font-medium text-gray-500 hover:text-gray-900">Feed</a>
+                    <a href="explore.html" class="navbar-link py-5 text-sm font-medium text-gray-500 hover:text-gray-900">Explore</a>
+                    <a href="opportunities.html" class="navbar-link py-5 text-sm font-medium text-gray-500 hover:text-gray-900">Opportunities</a>
+                    <a href="news.html" class="navbar-link active py-5 text-sm font-medium text-gray-500 hover:text-gray-900">News</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pt-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-3xl font-bold mb-8 text-center" style="color: #1e3a8a;">Latest Sports News</h2>
+        
+        <div id="news-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- News will be loaded here -->
+        </div>
+    </main>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            loadNews();
+            
+            document.addEventListener('click', function(e) {
+                if (e.target.textContent === 'Read More') {
+                    e.preventDefault();
+                    const card = e.target.closest('.card');
+                    const fullArticle = document.createElement('div');
+                    fullArticle.className = 'mt-4 p-4 bg-gray-50 rounded';
+                    fullArticle.innerHTML = `
+                        <h4 class="font-bold mb-2">Full Article</h4>
+                        <p class="text-gray-700 mb-4">This is the complete article content with detailed information about the sports news. The article covers all aspects of the story including background information, expert opinions, and future implications for the sports industry.</p>
+                        <p class="text-gray-700 mb-4">Additional paragraphs provide comprehensive coverage of the topic, ensuring readers get the full context and understanding of the situation.</p>
+                        <button onclick="this.parentElement.remove()" class="text-blue-600 hover:underline text-sm">Show Less</button>
+                    `;
+                    card.appendChild(fullArticle);
+                    e.target.style.display = 'none';
+                }
+            });
+        });
+        
+        function loadNews() {
+            const newsChannels = [
+                { name: 'BBC Sport', code: 'BBC', color: 'bg-red-600' },
+                { name: 'Sky Sports', code: 'SKY', color: 'bg-blue-600' },
+                { name: 'ESPN', code: 'ESPN', color: 'bg-green-600' },
+                { name: 'ITV Sport', code: 'ITV', color: 'bg-orange-600' },
+                { name: 'BT Sport', code: 'BT', color: 'bg-purple-600' },
+                { name: 'TalkSport', code: 'TS', color: 'bg-yellow-600' }
+            ];
+            
+            const newsArticles = [
+                { title: 'Premier League Title Race Intensifies', summary: 'Manchester City and Arsenal remain locked in fierce competition as the season enters its final stretch...', channel: 0, hours: 2 },
+                { title: 'Summer Transfer Window Opens', summary: 'Clubs across Europe prepare for major signings as the transfer window officially opens with record budgets...', channel: 1, hours: 4 },
+                { title: 'Champions League Final Preview', summary: 'Two European giants prepare for the ultimate showdown in what promises to be a thrilling final...', channel: 2, hours: 6 },
+                { title: 'World Cup Qualifiers Update', summary: 'National teams battle for crucial qualification spots as the World Cup draws closer...', channel: 3, hours: 8 },
+                { title: 'Youth Academy Success Stories', summary: 'Rising stars from academy programs making their mark in professional football across the country...', channel: 4, hours: 12 },
+                { title: 'Women\'s Football Growth', summary: 'Record attendance and viewership numbers highlight the incredible growth of women\'s professional football...', channel: 5, hours: 24 }
+            ];
+            
+            const container = document.getElementById('news-container');
+            container.innerHTML = newsArticles.map(article => {
+                const channel = newsChannels[article.channel];
+                return `
+                    <div class="card">
+                        <div class="flex items-center mb-4">
+                            <div class="w-10 h-10 ${channel.color} rounded-full flex items-center justify-center font-bold text-white text-sm">${channel.code}</div>
+                            <div class="ml-3">
+                                <p class="font-semibold text-sm">${channel.name}</p>
+                                <p class="text-xs text-gray-500">${article.hours} hours ago</p>
+                            </div>
+                        </div>
+                        <img src="https://placehold.co/400x200/1e3a8a/ffffff?text=${encodeURIComponent(article.title.split(' ').slice(0,2).join('+'))}" alt="News" class="w-full h-48 object-cover rounded-lg mb-4">
+                        <h3 class="text-lg font-bold mb-2">${article.title}</h3>
+                        <p class="text-gray-600 text-sm mb-3">${article.summary}</p>
+                        <a href="#" class="text-blue-600 hover:underline text-sm font-medium">Read More</a>
+                    </div>
+                `;
+            }).join('');
+        }
+    </script>
+    <script src="api.js"></script>
+    <script src="app.js"></script>
+    <script src="admin-page-settings.js"></script>
+</body>
+</html>

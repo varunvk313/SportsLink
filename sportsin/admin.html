@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - SportsIn</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="bg-white shadow-md fixed top-0 left-0 right-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <a href="index.html" class="text-2xl font-bold" style="color: #1e3a8a;">SportsIn Admin</a>
+                <div class="flex items-center space-x-6">
+                    <a href="dashboard.html" class="navbar-link py-5 text-sm font-medium text-gray-500 hover:text-gray-900">Feed</a>
+                    <a href="admin.html" class="navbar-link active py-5 text-sm font-medium text-red-500 hover:text-red-700">Admin Panel</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pt-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-3xl font-bold mb-8" style="color: #dc2626;">SportsIn Admin Dashboard</h2>
+        
+        <!-- Admin Stats -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            <div class="card text-center">
+                <h3 class="text-2xl font-bold text-blue-600" id="total-users">150</h3>
+                <p class="text-gray-600">Total Users</p>
+            </div>
+            <div class="card text-center">
+                <h3 class="text-2xl font-bold text-green-600" id="total-posts">45</h3>
+                <p class="text-gray-600">Total Posts</p>
+            </div>
+            <div class="card text-center">
+                <h3 class="text-2xl font-bold text-yellow-600" id="pending-posts-count">3</h3>
+                <p class="text-gray-600">Pending Posts</p>
+            </div>
+            <div class="card text-center">
+                <h3 class="text-2xl font-bold text-purple-600" id="total-jobs">12</h3>
+                <p class="text-gray-600">Job Listings</p>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Content Moderation -->
+            <div class="lg:col-span-2">
+                <div class="card mb-6">
+                    <h3 class="text-xl font-bold mb-4" style="color: #1e3a8a;">Content Moderation</h3>
+                    <div class="space-y-4">
+                        <div class="flex space-x-4 flex-wrap">
+                            <button class="btn-primary px-4 py-2 rounded" onclick="showPendingPosts()">Pending Posts</button>
+                            <button class="bg-gray-500 text-white px-4 py-2 rounded" onclick="showAllUsers()">Manage Users</button>
+                            <button class="bg-green-500 text-white px-4 py-2 rounded" onclick="showJobListings()">Job Listings</button>
+                            <button class="bg-orange-500 text-white px-4 py-2 rounded" onclick="refreshData()">Refresh Data</button>
+                        </div>
+                    </div>
+                    <div id="admin-content" class="mt-6">
+                        <!-- Dynamic content will be loaded here -->
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Admin Controls -->
+            <div>
+                <div class="card mb-6">
+                    <h3 class="text-xl font-bold mb-4" style="color: #1e3a8a;">Quick Actions</h3>
+                    <div class="space-y-3">
+                        <button class="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600" onclick="broadcastMessage()">Send Announcement</button>
+                        <button class="w-full bg-green-500 text-white py-2 rounded hover:bg-green-600" onclick="exportData()">Export User Data</button>
+                        <button class="w-full bg-yellow-500 text-white py-2 rounded hover:bg-yellow-600" onclick="viewAnalytics()">View Analytics</button>
+                        <button class="w-full bg-red-500 text-white py-2 rounded hover:bg-red-600" onclick="systemSettings()">System Settings</button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3 class="text-xl font-bold mb-4" style="color: #1e3a8a;">Recent Activity</h3>
+                    <div id="recent-activity" class="space-y-2 text-sm">
+                        <!-- Dynamic activity will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="api.js"></script>
+    <script src="app.js"></script>
+    <script>
+        // LinkedIn-style Admin Panel
+        class AdminPanel {
+            constructor() {
+                this.showPendingPosts();
+                this.updateStats();
+                this.updateRecentActivity();
+            }
+
+            updateStats() {
+                const users = JSON.parse(localStorage.getItem('sportsin_users')) || [];
+                const posts = JSON.parse(localStorage.getItem('sportsin_posts')) || [];
+                const opportunities = JSON.parse(localStorage.getItem('sportsin_opportunities')) || [];
+                const pendingPosts = posts.filter(p => p.status === 'pending');
+                
+                document.getElementById('total-users').textContent = users.length;
+                document.getElementById('total-posts').textContent = posts.length;
+                document.getElementById('pending-posts-count').textContent = pendingPosts.length;
+                document.getElementById('total-jobs').textContent = opportunities.length;
+            }
+
+            showPendingPosts() {
+                // Refresh posts data from localStorage
+                const posts = JSON.parse(localStorage.getItem('sportsin_posts')) || [];
+                const users = JSON.parse(localStorage.getItem('sportsin_users')) || [];
+                const pendingPosts = posts.filter(p => p.status === 'pending');
+                
+                console.log('Total posts:', posts.length);
+                console.log('Pending posts:', pendingPosts.length);
+                
+                const container = document.getElementById('admin-content');
+                if (pendingPosts.length === 0) {
+                    container.innerHTML = `<p class="text-gray-500 p-4">No pending posts to review</p><p class="text-xs text-gray-400 p-4">Total posts in system: ${posts.length}</p>`;
+                    return;
+                }
+
+                container.innerHTML = `
+                    <h4 class="font-bold mb-4">Posts Awaiting Approval</h4>
+                    ${pendingPosts.map(post => {
+                        const author = users.find(u => u.id === post.authorId);
+                        return `
+                            <div class="border border-gray-200 rounded-lg p-4 mb-4">
+                                <div class="flex items-center mb-3">
+                                    <div class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold">${author?.fullName.charAt(0) || 'U'}</div>
+                                    <div class="ml-3">
+                                        <p class="font-semibold">${author?.fullName || 'Unknown User'}</p>
+                                        <p class="text-sm text-gray-500">${author?.userType || 'User'}</p>
+                                    </div>
+                                </div>
+                                <p class="text-gray-700 mb-3">${post.content}</p>
+                                ${post.attachments && post.attachments.length > 0 ? `
+                                    <div class="mb-3">
+                                        <p class="text-sm text-gray-600 mb-2">Attachments (${post.attachments.length}):</p>
+                                        <div class="space-y-1">
+                                            ${post.attachments.map(att => `
+                                                <div class="text-xs text-gray-500 flex items-center space-x-1">
+                                                    <span>📎</span>
+                                                    <span>${att.name}</span>
+                                                    <span>(${(att.size/1024).toFixed(1)}KB)</span>
+                                                </div>
+                                            `).join('')}
+                                        </div>
+                                    </div>
+                                ` : ''}
+                                <div class="flex justify-between items-center">
+                                    <p class="text-xs text-gray-500">${new Date(post.timestamp).toLocaleString()}</p>
+                                    <div class="space-x-2">
+                                        <button onclick="adminPanel.approvePost(${post.id})" class="bg-green-500 text-white px-4 py-1 rounded text-sm hover:bg-green-600">Approve</button>
+                                        <button onclick="adminPanel.deletePost(${post.id})" class="bg-red-500 text-white px-4 py-1 rounded text-sm hover:bg-red-600">Reject</button>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    }).join('')}
+                `;
+            }
+
+            showAllUsers() {
+                const users = JSON.parse(localStorage.getItem('sportsin_users')) || [];
+                const container = document.getElementById('admin-content');
+                
+                container.innerHTML = `
+                    <h4 class="font-bold mb-4">User Management (${users.length} users)</h4>
+                    <div class="space-y-3">
+                        ${users.map(user => `
+                            <div class="flex items-center justify-between p-3 border rounded" id="user-${user.id}">
+                                <div class="flex items-center">
+                                    <div class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold">${user.fullName.charAt(0)}</div>
+                                    <div class="ml-3">
+                                        <p class="font-semibold editable" data-field="fullName" data-id="${user.id}">${user.fullName}</p>
+                                        <p class="text-sm text-gray-500">${user.userType} • <span class="editable" data-field="email" data-id="${user.id}">${user.email}</span></p>
+                                    </div>
+                                </div>
+                                <div class="space-x-2">
+                                    <button class="bg-green-500 text-white px-3 py-1 rounded text-sm" onclick="adminPanel.editUser(${user.id})">Edit</button>
+                                    <button class="bg-blue-500 text-white px-3 py-1 rounded text-sm" onclick="adminPanel.viewUser(${user.id})">View</button>
+                                    <button class="bg-red-500 text-white px-3 py-1 rounded text-sm" onclick="adminPanel.deleteUser(${user.id})">Delete</button>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            }
+
+            showJobListings() {
+                const opportunities = JSON.parse(localStorage.getItem('sportsin_opportunities')) || [];
+                const container = document.getElementById('admin-content');
+                
+                if (opportunities.length === 0) {
+                    container.innerHTML = `
+                        <h4 class="font-bold mb-4">Job Listings Management (0 jobs)</h4>
+                        <p class="text-gray-500 p-4">No job opportunities posted yet</p>
+                    `;
+                    return;
+                }
+                
+                container.innerHTML = `
+                    <h4 class="font-bold mb-4">Job Listings Management (${opportunities.length} jobs)</h4>
+                    <div class="space-y-3">
+                        ${opportunities.map(job => `
+                            <div class="p-4 border rounded" id="job-${job.id}">
+                                <div class="flex justify-between items-start">
+                                    <div>
+                                        <h5 class="font-semibold">${job.title}</h5>
+                                        <p class="text-sm text-gray-600">${job.organization} • ${job.location}</p>
+                                        <p class="text-sm text-gray-500 mt-1">Posted by: ${job.postedBy}</p>
+                                        <p class="text-xs text-gray-400">${new Date(job.timestamp).toLocaleDateString()}</p>
+                                    </div>
+                                    <div class="space-x-2">
+                                        <button class="bg-blue-500 text-white px-3 py-1 rounded text-sm" onclick="adminPanel.editJob(${job.id})">Edit</button>
+                                        <button class="bg-red-500 text-white px-3 py-1 rounded text-sm" onclick="adminPanel.deleteJob(${job.id})">Delete</button>
+                                    </div>
+                                </div>
+                                <div class="mt-2">
+                                    <p class="text-sm text-gray-700">${job.description}</p>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            }
+
+            approvePost(postId) {
+                const posts = JSON.parse(localStorage.getItem('sportsin_posts')) || [];
+                const postIndex = posts.findIndex(p => p.id === postId);
+                if (postIndex !== -1) {
+                    posts[postIndex].status = 'approved';
+                    localStorage.setItem('sportsin_posts', JSON.stringify(posts));
+                    this.showPendingPosts();
+                    this.updateStats();
+                }
+            }
+
+            deletePost(postId) {
+                const posts = JSON.parse(localStorage.getItem('sportsin_posts')) || [];
+                const filteredPosts = posts.filter(p => p.id !== postId);
+                localStorage.setItem('sportsin_posts', JSON.stringify(filteredPosts));
+                this.showPendingPosts();
+                this.updateStats();
+                this.updateRecentActivity();
+            }
+
+            editUser(userId) {
+                const users = JSON.parse(localStorage.getItem('sportsin_users')) || [];
+                const user = users.find(u => u.id === userId);
+                if (!user) return;
+                
+                const newName = prompt('Edit Full Name:', user.fullName);
+                const newEmail = prompt('Edit Email:', user.email);
+                
+                if (newName && newEmail) {
+                    user.fullName = newName;
+                    user.email = newEmail;
+                    localStorage.setItem('sportsin_users', JSON.stringify(users));
+                    this.showAllUsers();
+                    alert('User updated successfully!');
+                }
+            }
+
+            viewUser(userId) {
+                const users = JSON.parse(localStorage.getItem('sportsin_users')) || [];
+                const user = users.find(u => u.id === userId);
+                if (user) {
+                    alert(`User Details:\nName: ${user.fullName}\nEmail: ${user.email}\nType: ${user.userType}\nLocation: ${user.location || 'Not set'}`);
+                }
+            }
+
+            deleteUser(userId) {
+                if (confirm('Are you sure you want to delete this user? This action cannot be undone.')) {
+                    const users = JSON.parse(localStorage.getItem('sportsin_users')) || [];
+                    const filteredUsers = users.filter(u => u.id !== userId);
+                    localStorage.setItem('sportsin_users', JSON.stringify(filteredUsers));
+                    
+                    // Also remove their posts
+                    const posts = JSON.parse(localStorage.getItem('sportsin_posts')) || [];
+                    const filteredPosts = posts.filter(p => p.authorId !== userId);
+                    localStorage.setItem('sportsin_posts', JSON.stringify(filteredPosts));
+                    
+                    this.showAllUsers();
+                    this.updateStats();
+                    this.updateRecentActivity();
+                    alert('User and their content deleted successfully!');
+                }
+            }
+
+            updateRecentActivity() {
+                const posts = JSON.parse(localStorage.getItem('sportsin_posts')) || [];
+                const users = JSON.parse(localStorage.getItem('sportsin_users')) || [];
+                const announcements = JSON.parse(localStorage.getItem('sportsin_announcements')) || [];
+                
+                const activities = [];
+                
+                // Add recent posts
+                posts.slice(0, 3).forEach(post => {
+                    const author = users.find(u => u.id === post.authorId);
+                    activities.push(`• ${author?.fullName || 'Unknown'} posted content (${post.status})`);
+                });
+                
+                // Add recent announcements
+                announcements.slice(0, 2).forEach(ann => {
+                    activities.push(`• System announcement sent`);
+                });
+                
+                // Add user count
+                activities.push(`• ${users.length} total users registered`);
+                
+                const container = document.getElementById('recent-activity');
+                if (container) {
+                    container.innerHTML = activities.map(activity => 
+                        `<p class="text-gray-600">${activity}</p>`
+                    ).join('');
+                }
+            }
+        }
+
+        // Global admin functions
+        function showPendingPosts() { 
+            if (window.adminPanel) window.adminPanel.showPendingPosts(); 
+        }
+        function showAllUsers() { 
+            if (window.adminPanel) window.adminPanel.showAllUsers(); 
+        }
+        function showJobListings() { 
+            if (window.adminPanel) window.adminPanel.showJobListings(); 
+        }
+        
+        function broadcastMessage() {
+            const message = prompt('Enter announcement message:');
+            if (message) {
+                const announcement = {
+                    id: Date.now(),
+                    message: message,
+                    timestamp: new Date().toISOString(),
+                    type: 'system'
+                };
+                
+                // Store announcement
+                const announcements = JSON.parse(localStorage.getItem('sportsin_announcements')) || [];
+                announcements.unshift(announcement);
+                localStorage.setItem('sportsin_announcements', JSON.stringify(announcements));
+                
+                // Add to all users' notifications
+                const users = JSON.parse(localStorage.getItem('sportsin_users')) || [];
+                users.forEach(user => {
+                    const notifications = JSON.parse(localStorage.getItem(`notifications_${user.id}`)) || [];
+                    notifications.unshift({
+                        id: Date.now() + Math.random(),
+                        message: `System Announcement: ${message}`,
+                        timestamp: new Date().toISOString(),
+                        read: false,
+                        type: 'announcement'
+                    });
+                    localStorage.setItem(`notifications_${user.id}`, JSON.stringify(notifications));
+                });
+                
+                alert('Announcement sent to all users!');
+            }
+        }
+        
+        function exportData() {
+            const users = JSON.parse(localStorage.getItem('sportsin_users')) || [];
+            const posts = JSON.parse(localStorage.getItem('sportsin_posts')) || [];
+            
+            const exportData = {
+                users: users.map(u => ({...u, password: '[HIDDEN]'})),
+                posts: posts,
+                exportDate: new Date().toISOString(),
+                totalUsers: users.length,
+                totalPosts: posts.length
+            };
+            
+            const dataStr = JSON.stringify(exportData, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            const url = URL.createObjectURL(dataBlob);
+            
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `sportsin_data_${new Date().toISOString().split('T')[0]}.json`;
+            link.click();
+            
+            URL.revokeObjectURL(url);
+            alert('User data exported successfully!');
+        }
+        
+        function viewAnalytics() {
+            const users = JSON.parse(localStorage.getItem('sportsin_users')) || [];
+            const posts = JSON.parse(localStorage.getItem('sportsin_posts')) || [];
+            
+            const userTypes = {};
+            users.forEach(u => {
+                userTypes[u.userType] = (userTypes[u.userType] || 0) + 1;
+            });
+            
+            const approvedPosts = posts.filter(p => p.status === 'approved').length;
+            const pendingPosts = posts.filter(p => p.status === 'pending').length;
+            
+            const container = document.getElementById('admin-content');
+            container.innerHTML = `
+                <h4 class="font-bold mb-4">Platform Analytics</h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="card">
+                        <h5 class="font-semibold mb-3">User Distribution</h5>
+                        ${Object.entries(userTypes).map(([type, count]) => `
+                            <div class="flex justify-between mb-2">
+                                <span>${type}:</span>
+                                <span class="font-bold">${count}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="card">
+                        <h5 class="font-semibold mb-3">Content Statistics</h5>
+                        <div class="flex justify-between mb-2">
+                            <span>Approved Posts:</span>
+                            <span class="font-bold text-green-600">${approvedPosts}</span>
+                        </div>
+                        <div class="flex justify-between mb-2">
+                            <span>Pending Posts:</span>
+                            <span class="font-bold text-yellow-600">${pendingPosts}</span>
+                        </div>
+                        <div class="flex justify-between mb-2">
+                            <span>Total Posts:</span>
+                            <span class="font-bold">${posts.length}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="card mt-6">
+                    <h5 class="font-semibold mb-3">Recent Activity</h5>
+                    <div class="space-y-2 text-sm">
+                        ${posts.slice(0, 5).map(post => {
+                            const author = users.find(u => u.id === post.authorId);
+                            return `<p class="text-gray-600">• ${author?.fullName || 'Unknown'} posted content (${post.status})</p>`;
+                        }).join('')}
+                    </div>
+                </div>
+            `;
+        }
+        
+        function systemSettings() {
+            const container = document.getElementById('admin-content');
+            container.innerHTML = `
+                <h4 class="font-bold mb-4">System Settings</h4>
+                <div class="space-y-6">
+                    <div class="card">
+                        <h5 class="font-semibold mb-3">Platform Configuration</h5>
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center">
+                                <span>Auto-approve posts:</span>
+                                <input type="checkbox" id="auto-approve" class="rounded">
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span>Allow user registration:</span>
+                                <input type="checkbox" id="allow-registration" checked class="rounded">
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span>Maintenance mode:</span>
+                                <input type="checkbox" id="maintenance-mode" class="rounded">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <h5 class="font-semibold mb-3">Data Management</h5>
+                        <div class="space-y-2">
+                            <button class="w-full bg-yellow-500 text-white py-2 rounded" onclick="clearAllData()">Clear All Data</button>
+                            <button class="w-full bg-blue-500 text-white py-2 rounded" onclick="resetToDefaults()">Reset to Defaults</button>
+                            <button class="w-full bg-green-500 text-white py-2 rounded" onclick="backupData()">Backup Data</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        function clearAllData() {
+            if (confirm('Are you sure? This will delete ALL user data and posts. This cannot be undone!')) {
+                localStorage.removeItem('sportsin_users');
+                localStorage.removeItem('sportsin_posts');
+                localStorage.removeItem('sportsin_announcements');
+                alert('All data cleared!');
+                location.reload();
+            }
+        }
+        
+        function resetToDefaults() {
+            if (confirm('Reset all data to default values?')) {
+                localStorage.removeItem('sportsin_users');
+                localStorage.removeItem('sportsin_posts');
+                alert('Data reset to defaults!');
+                location.reload();
+            }
+        }
+        
+        function backupData() {
+            const backup = {
+                users: localStorage.getItem('sportsin_users'),
+                posts: localStorage.getItem('sportsin_posts'),
+                announcements: localStorage.getItem('sportsin_announcements'),
+                backupDate: new Date().toISOString()
+            };
+            
+            const dataStr = JSON.stringify(backup, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            const url = URL.createObjectURL(dataBlob);
+            
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `sportsin_backup_${new Date().toISOString().split('T')[0]}.json`;
+            link.click();
+            
+            URL.revokeObjectURL(url);
+            alert('Backup created successfully!');
+        }
+
+        // Show all posts for admin management
+        adminPanel.showAllPosts = function() {
+            const posts = JSON.parse(localStorage.getItem('sportsin_posts')) || [];
+            const users = JSON.parse(localStorage.getItem('sportsin_users')) || [];
+            
+            const container = document.getElementById('admin-content');
+            container.innerHTML = `
+                <h4 class="font-bold mb-4">All Posts Management (${posts.length} posts)</h4>
+                <div class="space-y-3">
+                    ${posts.map(post => {
+                        const author = users.find(u => u.id === post.authorId);
+                        return `
+                            <div class="p-4 border rounded ${post.status === 'pending' ? 'border-yellow-500 bg-yellow-50' : 'border-gray-200'}">
+                                <div class="flex justify-between items-start">
+                                    <div class="flex-1">
+                                        <div class="flex items-center mb-2">
+                                            <div class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white text-sm mr-2">${author?.fullName.charAt(0) || 'U'}</div>
+                                            <span class="font-semibold">${author?.fullName || 'Unknown User'}</span>
+                                            <span class="ml-2 px-2 py-1 text-xs rounded ${post.status === 'approved' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}">${post.status}</span>
+                                        </div>
+                                        <p class="text-gray-700 mb-2 editable" data-field="content" data-id="${post.id}">${post.content}</p>
+                                        ${post.attachments && post.attachments.length > 0 ? `
+                                            <div class="mb-2">
+                                                <p class="text-xs text-gray-600 mb-1">Attachments (${post.attachments.length}):</p>
+                                                <div class="space-y-1">
+                                                    ${post.attachments.map(att => `
+                                                        <div class="text-xs text-gray-500 flex items-center space-x-1">
+                                                            <span>📎</span>
+                                                            <span>${att.name}</span>
+                                                            <span>(${(att.size/1024).toFixed(1)}KB)</span>
+                                                        </div>
+                                                    `).join('')}
+                                                </div>
+                                            </div>
+                                        ` : ''}
+                                        <p class="text-xs text-gray-500">${new Date(post.timestamp).toLocaleString()}</p>
+                                    </div>
+                                    <div class="space-x-2 ml-4">
+                                        <button class="bg-blue-500 text-white px-3 py-1 rounded text-sm" onclick="adminPanel.editPost(${post.id})">Edit</button>
+                                        ${post.status === 'pending' ? `<button class="bg-green-500 text-white px-3 py-1 rounded text-sm" onclick="adminPanel.approvePost(${post.id})">Approve</button>` : ''}
+                                        <button class="bg-red-500 text-white px-3 py-1 rounded text-sm" onclick="adminPanel.deletePost(${post.id})">Delete</button>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+            `;
+        };
+
+        // Additional admin functions for job management
+        adminPanel.editPost = function(postId) {
+            const posts = JSON.parse(localStorage.getItem('sportsin_posts')) || [];
+            const post = posts.find(p => p.id === postId);
+            if (!post) return;
+            
+            const newContent = prompt('Edit post content:', post.content);
+            if (newContent) {
+                post.content = newContent;
+                localStorage.setItem('sportsin_posts', JSON.stringify(posts));
+                this.showAllPosts();
+                alert('Post updated successfully!');
+            }
+        };
+
+        adminPanel.editJob = function(jobId) {
+            const opportunities = JSON.parse(localStorage.getItem('sportsin_opportunities')) || [];
+            const job = opportunities.find(j => j.id === jobId);
+            if (!job) return;
+            
+            const newTitle = prompt('Edit Job Title:', job.title);
+            const newOrganization = prompt('Edit Organization:', job.organization);
+            const newLocation = prompt('Edit Location:', job.location);
+            
+            if (newTitle && newOrganization && newLocation) {
+                job.title = newTitle;
+                job.organization = newOrganization;
+                job.location = newLocation;
+                localStorage.setItem('sportsin_opportunities', JSON.stringify(opportunities));
+                alert('Job updated successfully!');
+                this.showJobListings();
+            }
+        };
+
+        adminPanel.deleteJob = function(jobId) {
+            if (confirm('Delete this job listing?')) {
+                const opportunities = JSON.parse(localStorage.getItem('sportsin_opportunities')) || [];
+                const filteredJobs = opportunities.filter(j => j.id !== jobId);
+                localStorage.setItem('sportsin_opportunities', JSON.stringify(filteredJobs));
+                alert('Job deleted successfully!');
+                this.showJobListings();
+                this.updateStats();
+            }
+        };
+
+        // News management
+        adminPanel.showNewsManagement = function() {
+            const container = document.getElementById('admin-content');
+            container.innerHTML = `
+                <h4 class="font-bold mb-4">News Articles Management</h4>
+                <div class="space-y-3">
+                    <div class="p-4 border rounded">
+                        <h5 class="font-semibold">Premier League Title Race Intensifies</h5>
+                        <p class="text-sm text-gray-600">BBC Sport • 2 hours ago</p>
+                        <div class="mt-2 space-x-2">
+                            <button class="bg-blue-500 text-white px-3 py-1 rounded text-sm">Edit</button>
+                            <button class="bg-red-500 text-white px-3 py-1 rounded text-sm">Delete</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        };
+
+        function refreshData() {
+            if (window.adminPanel) {
+                window.adminPanel.updateStats();
+                window.adminPanel.showPendingPosts();
+                window.adminPanel.updateRecentActivity();
+                alert('Data refreshed!');
+            }
+        }
+        
+        let adminPanel;
+        document.addEventListener('DOMContentLoaded', () => {
+            adminPanel = new AdminPanel();
+            window.adminPanel = adminPanel;
+        });
+    </script>
+</body>
+</html>

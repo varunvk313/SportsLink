@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test File Attachments - SportsIn</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-8">
+    <div class="max-w-2xl mx-auto">
+        <h1 class="text-2xl font-bold mb-6">Test File Attachment Feature</h1>
+        
+        <div class="bg-white p-6 rounded-lg shadow mb-6">
+            <h2 class="text-lg font-semibold mb-4">Create Test Post with Attachments</h2>
+            <form id="test-form">
+                <textarea placeholder="Test post content..." class="w-full border rounded-lg p-3 h-24 mb-3" required></textarea>
+                <div class="flex items-center space-x-2 mb-3">
+                    <input type="file" id="test-file-input" multiple accept="image/*,video/*,.pdf,.doc,.docx" class="hidden">
+                    <button type="button" onclick="document.getElementById('test-file-input').click()" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-2 rounded-lg text-sm flex items-center space-x-1">
+                        <span>📎</span>
+                        <span>Attach Files</span>
+                    </button>
+                    <div id="test-file-preview" class="flex-1 text-sm text-gray-600"></div>
+                </div>
+                <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-lg">Create Test Post</button>
+            </form>
+        </div>
+        
+        <div class="bg-white p-6 rounded-lg shadow">
+            <h2 class="text-lg font-semibold mb-4">Test Posts</h2>
+            <div id="test-posts-container">
+                <!-- Test posts will appear here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Simple test functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const fileInput = document.getElementById('test-file-input');
+            const filePreview = document.getElementById('test-file-preview');
+            const form = document.getElementById('test-form');
+            const postsContainer = document.getElementById('test-posts-container');
+            
+            // File preview
+            fileInput.addEventListener('change', function(e) {
+                const files = Array.from(e.target.files);
+                if (files.length > 0) {
+                    filePreview.innerHTML = `${files.length} file(s) selected: ${files.map(f => f.name).join(', ')}`;
+                } else {
+                    filePreview.innerHTML = '';
+                }
+            });
+            
+            // Form submission
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const content = e.target.querySelector('textarea').value;
+                const files = Array.from(fileInput.files);
+                
+                if (files.length > 0) {
+                    const attachments = [];
+                    let processedFiles = 0;
+                    
+                    files.forEach(file => {
+                        const reader = new FileReader();
+                        reader.onload = function(event) {
+                            attachments.push({
+                                name: file.name,
+                                type: file.type,
+                                size: file.size,
+                                data: event.target.result
+                            });
+                            processedFiles++;
+                            
+                            if (processedFiles === files.length) {
+                                createTestPost(content, attachments);
+                                form.reset();
+                                filePreview.innerHTML = '';
+                            }
+                        };
+                        reader.readAsDataURL(file);
+                    });
+                } else {
+                    createTestPost(content, []);
+                    form.reset();
+                }
+            });
+            
+            function createTestPost(content, attachments) {
+                const post = {
+                    id: Date.now(),
+                    content: content,
+                    attachments: attachments,
+                    timestamp: new Date().toISOString()
+                };
+                
+                displayTestPost(post);
+            }
+            
+            function displayTestPost(post) {
+                const attachmentsHtml = post.attachments && post.attachments.length > 0 ? `
+                    <div class="mt-3 space-y-2">
+                        ${post.attachments.map(attachment => {
+                            if (attachment.type.startsWith('image/')) {
+                                return `<img src="${attachment.data}" alt="${attachment.name}" class="max-w-full h-auto rounded-lg border">`;
+                            } else if (attachment.type.startsWith('video/')) {
+                                return `<video controls class="max-w-full h-auto rounded-lg border"><source src="${attachment.data}" type="${attachment.type}"></video>`;
+                            } else {
+                                return `<div class="flex items-center space-x-2 p-2 bg-gray-50 rounded border"><span>📎</span><span class="text-sm">${attachment.name}</span><span class="text-xs text-gray-500">(${(attachment.size/1024).toFixed(1)}KB)</span></div>`;
+                            }
+                        }).join('')}
+                    </div>
+                ` : '';
+                
+                const postHtml = `
+                    <div class="border rounded-lg p-4 mb-4">
+                        <p class="text-gray-800 mb-2">${post.content}</p>
+                        ${attachmentsHtml}
+                        <p class="text-xs text-gray-500 mt-2">${new Date(post.timestamp).toLocaleString()}</p>
+                    </div>
+                `;
+                
+                postsContainer.insertAdjacentHTML('afterbegin', postHtml);
+            }
+        });
+    </script>
+</body>
+</html>

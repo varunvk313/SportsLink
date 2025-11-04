@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - SportsIn</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="bg-white shadow-md fixed top-0 left-0 right-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <a href="index.html" class="text-2xl font-bold" style="color: #1e3a8a;">SportsIn</a>
+                </div>
+                <div class="flex items-center space-x-6">
+                    <a href="dashboard.html" class="navbar-link active py-5 text-sm font-medium text-gray-500 hover:text-gray-900">Feed</a>
+                    <a href="explore.html" class="navbar-link py-5 text-sm font-medium text-gray-500 hover:text-gray-900">Explore</a>
+                    <a href="messages.html" class="navbar-link py-5 text-sm font-medium text-gray-500 hover:text-gray-900 relative">Messages<span id="nav-unread-count" class="hidden absolute -top-1 -right-1 bg-red-500 text-white text-xs px-1 py-0.5 rounded-full">0</span></a>
+                    <a href="opportunities.html" class="navbar-link py-5 text-sm font-medium text-gray-500 hover:text-gray-900">Jobs</a>
+                    <a href="events.html" class="navbar-link py-5 text-sm font-medium text-gray-500 hover:text-gray-900">Events</a>
+                    <a href="training.html" class="navbar-link py-5 text-sm font-medium text-gray-500 hover:text-gray-900">Training</a>
+                    <a href="marketplace.html" class="navbar-link py-5 text-sm font-medium text-gray-500 hover:text-gray-900">Marketplace</a>
+                    <a href="news.html" class="navbar-link py-5 text-sm font-medium text-gray-500 hover:text-gray-900">News</a>
+                    <div class="relative">
+                        <button class="flex items-center space-x-2">
+                           <div class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center font-bold text-white">U</div>
+                           <span class="text-sm font-medium text-gray-600">User</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pt-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="md:col-span-2">
+                <div class="card mb-4">
+                    <h3 class="font-bold mb-2">Create Post</h3>
+                    <form id="post-form">
+                        <textarea placeholder="What's on your mind?" class="w-full border rounded-lg p-2 h-24" required></textarea>
+                        <div class="mt-2 flex items-center space-x-2">
+                            <input type="file" id="file-input" multiple accept="image/*,video/*,.pdf,.doc,.docx" class="hidden">
+                            <button type="button" onclick="document.getElementById('file-input').click()" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-2 rounded-lg text-sm flex items-center space-x-1">
+                                <span>📎</span>
+                                <span>Attach Files</span>
+                            </button>
+                            <div id="file-preview" class="flex-1 text-sm text-gray-600"></div>
+                        </div>
+                        <div class="mt-2 flex space-x-2">
+                            <button type="submit" class="btn-primary font-bold py-2 px-4 rounded-lg">Post</button>
+                            <button type="button" onclick="createTestPost()" class="bg-gray-500 text-white font-bold py-2 px-4 rounded-lg">Test Post</button>
+                        </div>
+                    </form>
+                </div>
+                
+                <div id="posts-container">
+                    <!-- Posts will be loaded here -->
+                </div>
+            </div>
+            
+            <div class="hidden md:block">
+                <div class="card sticky top-24 mb-6">
+                    <h3 class="font-bold text-lg mb-2">Welcome!</h3>
+                    <p class="text-gray-600">Professional Athlete</p>
+                    <a href="profile.html" class="text-blue-600 hover:underline mt-4 inline-block">View My Profile</a>
+                </div>
+                
+                <div class="card mb-6">
+                    <h3 class="font-bold text-lg mb-4">Quick Actions</h3>
+                    <div class="space-y-2">
+                        <a href="events.html" class="block w-full bg-blue-50 text-blue-700 px-4 py-2 rounded-lg hover:bg-blue-100 text-sm font-medium">🏆 Find Sports Events</a>
+                        <a href="training.html" class="block w-full bg-green-50 text-green-700 px-4 py-2 rounded-lg hover:bg-green-100 text-sm font-medium">💪 Training Resources</a>
+                        <a href="opportunities.html" class="block w-full bg-purple-50 text-purple-700 px-4 py-2 rounded-lg hover:bg-purple-100 text-sm font-medium">💼 Job Opportunities</a>
+                        <a href="marketplace.html" class="block w-full bg-red-50 text-red-700 px-4 py-2 rounded-lg hover:bg-red-100 text-sm font-medium">🛍️ Sports Marketplace</a>
+                        <button onclick="showAchievements()" class="block w-full bg-yellow-50 text-yellow-700 px-4 py-2 rounded-lg hover:bg-yellow-100 text-sm font-medium text-left">🏅 My Achievements</button>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="font-bold text-lg">Messages</h3>
+                        <span id="unread-count" class="hidden bg-red-500 text-white text-xs px-2 py-1 rounded-full">0</span>
+                    </div>
+                    <div id="recent-messages" class="space-y-2 text-sm">
+                        <!-- Recent messages will be loaded here -->
+                    </div>
+                    <a href="messages.html" class="block text-center text-blue-600 hover:underline mt-3 text-sm">View All Messages</a>
+                </div>
+                
+
+            </div>
+        </div>
+    </main>
+    <script>
+        // Enhanced button functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            document.addEventListener('click', function(e) {
+                // Like functionality
+                if (e.target.textContent.includes('Like')) {
+                    e.preventDefault();
+                    const currentLikes = parseInt(e.target.textContent.match(/\d+/)[0]) || 0;
+                    e.target.textContent = `👍 Like (${currentLikes + 1})`;
+                    e.target.style.color = '#3b82f6';
+                }
+                
+                // Comment functionality
+                if (e.target.textContent.includes('Comment')) {
+                    e.preventDefault();
+                    const postCard = e.target.closest('.card');
+                    let commentSection = postCard.querySelector('.comment-section');
+                    
+                    if (!commentSection) {
+                        commentSection = document.createElement('div');
+                        commentSection.className = 'comment-section mt-4 border-t pt-4';
+                        commentSection.innerHTML = `
+                            <div class="comments-list mb-3"></div>
+                            <div class="flex space-x-2">
+                                <input type="text" placeholder="Write a comment..." class="flex-1 px-3 py-2 border rounded-lg text-sm">
+                                <button class="bg-blue-500 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-600">Post</button>
+                            </div>
+                        `;
+                        postCard.appendChild(commentSection);
+                        
+                        // Add comment submission
+                        const commentInput = commentSection.querySelector('input');
+                        const commentBtn = commentSection.querySelector('button');
+                        const commentsList = commentSection.querySelector('.comments-list');
+                        
+                        commentBtn.addEventListener('click', function() {
+                            const commentText = commentInput.value.trim();
+                            if (commentText) {
+                                const currentUser = JSON.parse(localStorage.getItem('sportsin_currentUser'));
+                                const userName = currentUser ? currentUser.fullName : 'Anonymous';
+                                
+                                const commentDiv = document.createElement('div');
+                                commentDiv.className = 'mb-2 p-2 bg-gray-50 rounded text-sm';
+                                commentDiv.innerHTML = `<strong>${userName}:</strong> ${commentText}`;
+                                commentsList.appendChild(commentDiv);
+                                
+                                commentInput.value = '';
+                            }
+                        });
+                        
+                        commentInput.addEventListener('keypress', function(e) {
+                            if (e.key === 'Enter') {
+                                commentBtn.click();
+                            }
+                        });
+                    } else {
+                        commentSection.style.display = commentSection.style.display === 'none' ? 'block' : 'none';
+                    }
+                }
+            });
+            
+            // File attachment handling
+            const fileInput = document.getElementById('file-input');
+            const filePreview = document.getElementById('file-preview');
+            
+            if (fileInput) {
+                fileInput.addEventListener('change', function(e) {
+                    const files = Array.from(e.target.files);
+                    if (files.length > 0) {
+                        filePreview.innerHTML = `${files.length} file(s) selected: ${files.map(f => f.name).join(', ')}`;
+                    } else {
+                        filePreview.innerHTML = '';
+                    }
+                });
+            }
+            
+            // Load recent messages
+            loadRecentMessages();
+            
+            // Refresh messages every 30 seconds
+            setInterval(loadRecentMessages, 30000);
+        });
+        
+
+        
+        function showAchievements() {
+            const currentUser = JSON.parse(localStorage.getItem('sportsin_currentUser'));
+            if (!currentUser) {
+                alert('Please login to view achievements');
+                return;
+            }
+            
+            const posts = JSON.parse(localStorage.getItem('sportsin_posts')) || [];
+            const userPosts = posts.filter(p => p.authorId === currentUser.id && p.status === 'approved');
+            const connections = currentUser.connections || [];
+            
+            let achievements = [];
+            if (userPosts.length >= 1) achievements.push('📝 First Post');
+            if (userPosts.length >= 5) achievements.push('📚 Active Contributor');
+            if (connections.length >= 1) achievements.push('🤝 First Connection');
+            if (connections.length >= 10) achievements.push('🎆 Network Builder');
+            
+            alert(`Your Achievements:\n\n${achievements.length > 0 ? achievements.join('\n') : 'No achievements yet. Keep engaging!'}`);
+        }
+        
+        function loadRecentMessages() {
+            const currentUser = JSON.parse(localStorage.getItem('sportsin_currentUser'));
+            if (!currentUser) return;
+            
+            const conversations = JSON.parse(localStorage.getItem('sportsin_conversations')) || {};
+            const users = JSON.parse(localStorage.getItem('sportsin_users')) || [];
+            const readMessages = JSON.parse(localStorage.getItem(`read_messages_${currentUser.id}`)) || {};
+            
+            const userConversations = conversations[currentUser.id] || {};
+            const recentMessages = document.getElementById('recent-messages');
+            const unreadCount = document.getElementById('unread-count');
+            
+            if (Object.keys(userConversations).length === 0) {
+                recentMessages.innerHTML = '<p class="text-gray-500">No messages yet</p>';
+                return;
+            }
+            
+            let totalUnread = 0;
+            const conversationList = Object.entries(userConversations).map(([userId, messages]) => {
+                const user = users.find(u => u.id == userId);
+                const lastMessage = messages[messages.length - 1];
+                const unreadInConversation = messages.filter(msg => 
+                    msg.senderId != currentUser.id && !readMessages[`${userId}_${msg.id}`]
+                ).length;
+                totalUnread += unreadInConversation;
+                
+                return {
+                    userId,
+                    user,
+                    lastMessage,
+                    unreadCount: unreadInConversation,
+                    timestamp: lastMessage ? new Date(lastMessage.timestamp) : new Date(0)
+                };
+            }).sort((a, b) => b.timestamp - a.timestamp).slice(0, 3);
+            
+            recentMessages.innerHTML = conversationList.map(conv => `
+                <div class="flex items-center p-2 hover:bg-gray-50 rounded cursor-pointer ${conv.unreadCount > 0 ? 'bg-blue-50 border-l-2 border-blue-500' : ''}" onclick="window.location.href='messages.html?user=${conv.userId}'">
+                    <div class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white text-xs mr-2 overflow-hidden">
+                        ${conv.user?.profilePhoto ? `<img src="${conv.user.profilePhoto}" alt="Profile" class="w-full h-full object-cover">` : (conv.user?.fullName?.charAt(0) || 'U')}
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p class="font-medium text-xs truncate ${conv.unreadCount > 0 ? 'font-bold' : ''}">${conv.user?.fullName || 'Unknown'}</p>
+                        <p class="text-xs text-gray-500 truncate">${conv.lastMessage?.text || 'No messages'}</p>
+                    </div>
+                    ${conv.unreadCount > 0 ? `<span class="bg-red-500 text-white text-xs px-1 py-0.5 rounded-full ml-1">${conv.unreadCount}</span>` : ''}
+                </div>
+            `).join('');
+            
+            if (totalUnread > 0) {
+                unreadCount.textContent = totalUnread;
+                unreadCount.classList.remove('hidden');
+                // Update nav badge
+                const navBadge = document.getElementById('nav-unread-count');
+                if (navBadge) {
+                    navBadge.textContent = totalUnread;
+                    navBadge.classList.remove('hidden');
+                }
+            } else {
+                unreadCount.classList.add('hidden');
+                const navBadge = document.getElementById('nav-unread-count');
+                if (navBadge) navBadge.classList.add('hidden');
+            }
+        }
+    </script>
+    <script>
+        // Direct post creation function
+        function createPostDirect(content, attachments = []) {
+            const currentUser = JSON.parse(localStorage.getItem('sportsin_currentUser'));
+            if (!currentUser) return false;
+            
+            const posts = JSON.parse(localStorage.getItem('sportsin_posts')) || [];
+            const newPost = {
+                id: Date.now(),
+                authorId: currentUser.id,
+                content: content,
+                attachments: attachments,
+                timestamp: new Date().toISOString(),
+                likes: [],
+                comments: [],
+                status: 'pending'
+            };
+            
+            posts.unshift(newPost);
+            localStorage.setItem('sportsin_posts', JSON.stringify(posts));
+            console.log('Post created:', newPost);
+            return true;
+        }
+        
+        // Test post function
+        function createTestPost() {
+            if (createPostDirect('This is a test post for admin review - ' + new Date().toLocaleTimeString())) {
+                alert('Test post created for admin review!');
+            } else {
+                alert('Please login first');
+            }
+        }
+        
+        // Override form submission
+        document.addEventListener('DOMContentLoaded', function() {
+            const postForm = document.getElementById('post-form');
+            if (postForm) {
+                postForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const content = e.target.querySelector('textarea').value.trim();
+                    if (!content) return;
+                    
+                    const fileInput = document.getElementById('file-input');
+                    if (fileInput && fileInput.files.length > 0) {
+                        const attachments = [];
+                        let processedFiles = 0;
+                        
+                        Array.from(fileInput.files).forEach(file => {
+                            const reader = new FileReader();
+                            reader.onload = function(event) {
+                                attachments.push({
+                                    name: file.name,
+                                    type: file.type,
+                                    size: file.size,
+                                    data: event.target.result
+                                });
+                                processedFiles++;
+                                
+                                if (processedFiles === fileInput.files.length) {
+                                    if (createPostDirect(content, attachments)) {
+                                        e.target.reset();
+                                        document.getElementById('file-preview').innerHTML = '';
+                                        alert('Post with attachments submitted for review!');
+                                    }
+                                }
+                            };
+                            reader.readAsDataURL(file);
+                        });
+                    } else {
+                        if (createPostDirect(content)) {
+                            e.target.reset();
+                            alert('Post submitted for review!');
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+    <script src="notifications.js"></script>
+    <script src="api.js"></script>
+    <script src="app.js"></script>
+    <script src="admin-page-settings.js"></script>
+</body>
+</html>

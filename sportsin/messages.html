@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Messages - SportsIn</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="bg-white shadow-md fixed top-0 left-0 right-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <a href="index.html" class="text-2xl font-bold" style="color: #1e3a8a;">SportsIn</a>
+                <div class="flex items-center space-x-6">
+                    <!-- Navigation will be loaded by app.js -->
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pt-16 h-screen flex">
+        <!-- Conversations List -->
+        <div class="w-1/3 bg-white border-r border-gray-200">
+            <div class="p-4 border-b">
+                <h2 class="text-xl font-bold">Messages</h2>
+                <button onclick="startNewChat()" class="mt-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 text-sm">New Message</button>
+            </div>
+            <div id="conversations-list" class="overflow-y-auto h-full">
+                <!-- Conversations will be loaded here -->
+            </div>
+        </div>
+
+        <!-- Chat Area -->
+        <div class="flex-1 flex flex-col">
+            <div id="chat-header" class="p-4 border-b bg-white hidden">
+                <div class="flex items-center">
+                    <div id="chat-user-avatar" class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold mr-3"></div>
+                    <div>
+                        <h3 id="chat-user-name" class="font-semibold"></h3>
+                        <p id="chat-user-status" class="text-sm text-gray-500">Online</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="chat-messages" class="flex-1 overflow-y-auto p-4 bg-gray-50">
+                <div id="no-chat-selected" class="h-full flex items-center justify-center text-gray-500">
+                    <div class="text-center">
+                        <h3 class="text-xl font-semibold mb-2">Select a conversation</h3>
+                        <p>Choose from existing conversations or start a new one</p>
+                    </div>
+                </div>
+                <div id="messages-container" class="hidden space-y-3"></div>
+            </div>
+
+            <div id="chat-input" class="p-4 bg-white border-t hidden">
+                <div class="flex space-x-2">
+                    <input type="text" id="message-input" placeholder="Type a message..." class="flex-1 p-3 border rounded-lg">
+                    <button onclick="sendMessage()" class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700">Send</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- New Chat Modal -->
+    <div id="new-chat-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white rounded-lg p-6 w-96">
+            <h3 class="text-lg font-bold mb-4">Start New Conversation</h3>
+            <input type="text" id="user-search" placeholder="Search users..." class="w-full p-3 border rounded-lg mb-4">
+            <div id="user-search-results" class="max-h-60 overflow-y-auto space-y-2"></div>
+            <div class="flex justify-end space-x-2 mt-4">
+                <button onclick="closeNewChatModal()" class="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentChatUser = null;
+        let conversations = JSON.parse(localStorage.getItem('sportsin_conversations')) || {};
+
+        document.addEventListener('DOMContentLoaded', function() {
+            loadConversations();
+            
+            // Check if opening chat with specific user
+            const urlParams = new URLSearchParams(window.location.search);
+            const userId = urlParams.get('user');
+            if (userId) {
+                openChat(parseInt(userId));
+            }
+            
+            // Enter key to send message
+            document.getElementById('message-input').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    sendMessage();
+                }
+            });
+
+            // User search
+            document.getElementById('user-search').addEventListener('input', function(e) {
+                searchUsers(e.target.value);
+            });
+        });
+
+        function loadConversations() {
+            const currentUser = JSON.parse(localStorage.getItem('sportsin_currentUser'));
+            if (!currentUser) return;
+
+            const userConversations = conversations[currentUser.id] || {};
+            const conversationsList = document.getElementById('conversations-list');
+            const readMessages = JSON.parse(localStorage.getItem(`read_messages_${currentUser.id}`)) || {};
+            
+            if (Object.keys(userConversations).length === 0) {
+                conversationsList.innerHTML = '<div class="p-4 text-gray-500 text-center">No conversations yet</div>';
+                return;
+            }
+
+            const users = JSON.parse(localStorage.getItem('sportsin_users')) || [];
+            conversationsList.innerHTML = Object.entries(userConversations).map(([userId, messages]) => {
+                const user = users.find(u => u.id == userId);
+                const lastMessage = messages[messages.length - 1];
+                const unreadCount = messages.filter(msg => 
+                    msg.senderId != currentUser.id && !readMessages[`${userId}_${msg.id}`]
+                ).length;
+                
+                return `
+                    <div class="p-4 border-b hover:bg-gray-50 cursor-pointer ${unreadCount > 0 ? 'bg-blue-50 border-l-4 border-blue-500' : ''}" onclick="openChat(${userId})">
+                        <div class="flex items-center">
+                            <div class="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold mr-3 overflow-hidden">
+                                ${user?.profilePhoto ? `<img src="${user.profilePhoto}" alt="Profile" class="w-full h-full object-cover">` : (user?.fullName?.charAt(0) || 'U')}
+                            </div>
+                            <div class="flex-1">
+                                <h4 class="font-semibold ${unreadCount > 0 ? 'font-bold' : ''}">${user?.fullName || 'Unknown User'}</h4>
+                                <p class="text-sm text-gray-500 truncate ${unreadCount > 0 ? 'font-medium text-gray-700' : ''}">${lastMessage?.text || 'No messages'}</p>
+                            </div>
+                            <div class="flex flex-col items-end">
+                                <div class="text-xs text-gray-400">
+                                    ${lastMessage ? new Date(lastMessage.timestamp).toLocaleDateString() : ''}
+                                </div>
+                                ${unreadCount > 0 ? `<span class="bg-red-500 text-white text-xs px-2 py-1 rounded-full mt-1">${unreadCount}</span>` : ''}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function openChat(userId) {
+            const users = JSON.parse(localStorage.getItem('sportsin_users')) || [];
+            const user = users.find(u => u.id == userId);
+            if (!user) return;
+
+            currentChatUser = user;
+            
+            // Mark messages as read
+            markMessagesAsRead(userId);
+            
+            // Update chat header
+            document.getElementById('chat-header').classList.remove('hidden');
+            document.getElementById('chat-input').classList.remove('hidden');
+            document.getElementById('no-chat-selected').classList.add('hidden');
+            document.getElementById('messages-container').classList.remove('hidden');
+            
+            document.getElementById('chat-user-avatar').innerHTML = user.profilePhoto ? 
+                `<img src="${user.profilePhoto}" alt="Profile" class="w-full h-full object-cover rounded-full">` : 
+                user.fullName.charAt(0);
+            document.getElementById('chat-user-name').textContent = user.fullName;
+            
+            loadMessages(userId);
+            loadConversations(); // Refresh to update unread counts
+        }
+
+        function loadMessages(userId) {
+            const currentUser = JSON.parse(localStorage.getItem('sportsin_currentUser'));
+            const messages = conversations[currentUser.id]?.[userId] || [];
+            
+            const container = document.getElementById('messages-container');
+            container.innerHTML = messages.map(msg => `
+                <div class="flex ${msg.senderId === currentUser.id ? 'justify-end' : 'justify-start'}">
+                    <div class="max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${msg.senderId === currentUser.id ? 'bg-blue-600 text-white' : 'bg-white border'}">
+                        <p>${msg.text}</p>
+                        <p class="text-xs mt-1 ${msg.senderId === currentUser.id ? 'text-blue-100' : 'text-gray-500'}">
+                            ${new Date(msg.timestamp).toLocaleTimeString()}
+                        </p>
+                    </div>
+                </div>
+            `).join('');
+            
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('message-input');
+            const text = input.value.trim();
+            if (!text || !currentChatUser) return;
+
+            const currentUser = JSON.parse(localStorage.getItem('sportsin_currentUser'));
+            const message = {
+                id: Date.now(),
+                senderId: currentUser.id,
+                text: text,
+                timestamp: new Date().toISOString()
+            };
+
+            // Add to sender's conversation
+            if (!conversations[currentUser.id]) conversations[currentUser.id] = {};
+            if (!conversations[currentUser.id][currentChatUser.id]) conversations[currentUser.id][currentChatUser.id] = [];
+            conversations[currentUser.id][currentChatUser.id].push(message);
+
+            // Add to receiver's conversation
+            if (!conversations[currentChatUser.id]) conversations[currentChatUser.id] = {};
+            if (!conversations[currentChatUser.id][currentUser.id]) conversations[currentChatUser.id][currentUser.id] = [];
+            conversations[currentChatUser.id][currentUser.id].push(message);
+
+            localStorage.setItem('sportsin_conversations', JSON.stringify(conversations));
+            
+            input.value = '';
+            loadMessages(currentChatUser.id);
+            loadConversations();
+        }
+
+        function startNewChat() {
+            document.getElementById('new-chat-modal').classList.remove('hidden');
+            searchUsers('');
+        }
+
+        function closeNewChatModal() {
+            document.getElementById('new-chat-modal').classList.add('hidden');
+            document.getElementById('user-search').value = '';
+        }
+
+        function searchUsers(query) {
+            const currentUser = JSON.parse(localStorage.getItem('sportsin_currentUser'));
+            const users = JSON.parse(localStorage.getItem('sportsin_users')) || [];
+            
+            const filteredUsers = users.filter(u => 
+                u.id !== currentUser.id && 
+                u.fullName.toLowerCase().includes(query.toLowerCase())
+            );
+
+            const results = document.getElementById('user-search-results');
+            results.innerHTML = filteredUsers.map(user => `
+                <div class="flex items-center p-2 hover:bg-gray-100 rounded cursor-pointer" onclick="startChatWith(${user.id})">
+                    <div class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold mr-3 overflow-hidden">
+                        ${user.profilePhoto ? `<img src="${user.profilePhoto}" alt="Profile" class="w-full h-full object-cover">` : user.fullName.charAt(0)}
+                    </div>
+                    <div>
+                        <h4 class="font-medium">${user.fullName}</h4>
+                        <p class="text-sm text-gray-500">${user.sport} • ${user.userType}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function startChatWith(userId) {
+            closeNewChatModal();
+            openChat(userId);
+        }
+        
+        function markMessagesAsRead(userId) {
+            const currentUser = JSON.parse(localStorage.getItem('sportsin_currentUser'));
+            const readMessages = JSON.parse(localStorage.getItem(`read_messages_${currentUser.id}`)) || {};
+            const messages = conversations[currentUser.id]?.[userId] || [];
+            
+            messages.forEach(msg => {
+                if (msg.senderId != currentUser.id) {
+                    readMessages[`${userId}_${msg.id}`] = true;
+                }
+            });
+            
+            localStorage.setItem(`read_messages_${currentUser.id}`, JSON.stringify(readMessages));
+        }
+    </script>
+    <script src="app.js"></script>
+</body>
+</html>

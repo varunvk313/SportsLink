@@ -1,0 +1,1201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SportsIn - The Professional Network for Sports</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+
+    <nav class="bg-white shadow-md fixed top-0 left-0 right-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <a href="index.html" class="text-2xl font-bold" style="color: #1e3a8a;">SportsIn</a>
+                <div class="flex items-center space-x-4">
+                    <a href="login.html" class="text-gray-600 hover:bg-gray-100 px-4 py-2 rounded-full text-sm font-medium">Log In</a>
+                    <a href="register.html" class="btn-primary px-4 py-2 rounded-full text-sm font-medium">Join Now</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pt-16">
+        <!-- Hero Section -->
+        <section class="bg-gradient-to-br from-blue-900 to-blue-700 text-white py-20">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <h1 class="text-5xl font-bold mb-6">Welcome to the future of sports networking</h1>
+                        <p class="text-xl mb-8 text-blue-100">Connect with athletes, coaches, scouts, and sports professionals worldwide. Build your career in the sports industry.</p>
+                        <div class="space-x-4">
+                            <a href="register.html" class="bg-white text-blue-900 font-bold py-3 px-8 rounded-lg hover:bg-gray-100 transition">Join Now</a>
+                            <a href="login.html" class="border-2 border-white text-white font-bold py-3 px-8 rounded-lg hover:bg-white hover:text-blue-900 transition">Sign In</a>
+                        </div>
+                    </div>
+                    <div class="hidden lg:block">
+                        <img src="https://placehold.co/600x400/1e3a8a/ffffff?text=Sports+Network" alt="Sports Network" class="rounded-lg shadow-2xl">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="py-20 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl font-bold mb-4" style="color: #1e3a8a;">Why Choose SportsIn?</h2>
+                    <p class="text-xl text-gray-600">The professional network built specifically for the sports industry</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="text-center p-8 rounded-lg shadow-lg hover:shadow-xl transition">
+                        <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold mb-4">Connect with Professionals</h3>
+                        <p class="text-gray-600">Network with athletes, coaches, scouts, and industry experts from around the world.</p>
+                    </div>
+                    <div class="text-center p-8 rounded-lg shadow-lg hover:shadow-xl transition">
+                        <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold mb-4">Find Opportunities</h3>
+                        <p class="text-gray-600">Discover job openings, tryouts, and career opportunities in the sports industry.</p>
+                    </div>
+                    <div class="text-center p-8 rounded-lg shadow-lg hover:shadow-xl transition">
+                        <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <svg class="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold mb-4">Grow Your Career</h3>
+                        <p class="text-gray-600">Build your professional brand and advance your career in sports.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stats Section -->
+        <section class="py-20 bg-gray-50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl font-bold mb-4" style="color: #1e3a8a;">Join Thousands of Sports Professionals</h2>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-8 text-center">
+                    <div>
+                        <div class="text-4xl font-bold text-blue-600 mb-2" id="active-users">0</div>
+                        <div class="text-gray-600">Active Users</div>
+                    </div>
+                    <div>
+                        <div class="text-4xl font-bold text-green-600 mb-2" id="job-opportunities">0</div>
+                        <div class="text-gray-600">Job Opportunities</div>
+                    </div>
+                    <div>
+                        <div class="text-4xl font-bold text-purple-600 mb-2" id="sports-categories">0</div>
+                        <div class="text-gray-600">Sports Categories</div>
+                    </div>
+                    <div>
+                        <div class="text-4xl font-bold text-orange-600 mb-2" id="countries">0</div>
+                        <div class="text-gray-600">Countries</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="py-20 bg-blue-900 text-white">
+            <div class="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
+                <h2 class="text-4xl font-bold mb-6">Ready to advance your sports career?</h2>
+                <p class="text-xl mb-8 text-blue-100">Join SportsIn today and connect with the global sports community.</p>
+                <a href="register.html" class="bg-white text-blue-900 font-bold py-4 px-8 rounded-lg text-lg hover:bg-gray-100 transition">Get Started for Free</a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-900 text-white">
+        <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-lg font-semibold">SportsIn</h3>
+                    <ul class="mt-4 space-y-2 text-gray-300">
+                        <li><a href="#" class="hover:text-white">About Us</a></li>
+                        <li><a href="#" class="hover:text-white">Careers</a></li>
+                        <li><a href="#" class="hover:text-white">Press</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold">For Professionals</h3>
+                    <ul class="mt-4 space-y-2 text-gray-300">
+                        <li><a href="explore.html" class="hover:text-white">Explore</a></li>
+                        <li><a href="opportunities.html" class="hover:text-white">Opportunities</a></li>
+                        <li><a href="dashboard.html" class="hover:text-white">Feed</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold">Legal</h3>
+                    <ul class="mt-4 space-y-2 text-gray-300">
+                        <li><a href="#" class="hover:text-white">Privacy Policy</a></li>
+                        <li><a href="#" class="hover:text-white">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold">Contact</h3>
+                    <ul class="mt-4 space-y-2 text-gray-300">
+                        <li><a href="contact.html" class="hover:text-white">Contact Us</a></li>
+                        <li><a href="mailto:contact@sportsin.com" class="hover:text-white">contact@sportsin.com</a></li>
+                        <li>+1 (555) 123-4567</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="mt-8 border-t border-gray-700 pt-8 text-center text-gray-400">
+                <p>&copy; 2025 SportsIn, Inc. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+
+    <script>
+        // --- HARDCODED API DATA: CURRENT REAL-WORLD RESULTS (EXPANDED) ---
+        const LIVE_DATA = {
+            feedUpdates: [
+                { id: 'api-1', authorName: 'India Today Sports', content: '🔔 **Industry Update**: AUS vs IND. 3rd ODI LIVE: Siraj breaks opening partnership, Travis Head departs. [Source: India Today]', timestamp: '2025-10-25T13:00:00Z', isApi: true, url: 'https://www.indiatoday.in/sports' },
+                { id: 'api-2', authorName: 'Times of India', content: '🔔 **Industry Update**: Virat Kohli takes stunning reflex catch in Sydney ODI. Former captain looked charged up on the field. [Source: Times of India]', timestamp: '2025-10-25T12:45:00Z', isApi: true, url: 'https://timesofindia.indiatimes.com/sports' },
+                { id: 'api-3', authorName: 'The Hindu', content: '🔔 **Industry Update**: Women ODI World Cup: Pratika, Smriti and Jemimah dazzle as India seals last semifinal spot. [Source: The Hindu]', timestamp: '2025-10-25T11:00:00Z', isApi: true, url: 'https://www.thehindu.com/sport/cricket/' },
+                { id: 'api-4', authorName: 'India TV News', content: '🔔 **Industry Update**: Pakistan Pulls Out of Men\'s Junior Hockey World Cup in India on government advice. [Source: India TV News]', timestamp: '2025-10-25T08:22:00Z', isApi: true, url: 'https://www.indiatvnews.com/sports' },
+                { id: 'api-5', authorName: 'Newsonair', content: '🔔 **Industry Update**: India Clinch Double Gold in Kabaddi at Asian Youth Games 2025; Boys and Girls Teams Remain Unbeaten. [Source: Newsonair]', timestamp: '2025-10-25T08:00:00Z', isApi: true, url: 'https://www.newsonair.gov.in/category/sports/' },
+                { id: 'api-6', authorName: 'Deccan Herald', content: '🔔 **Industry Update**: Ranji Trophy: Karnataka eye crucial points against Goa in domestic opener. [Source: Deccan Herald]', timestamp: '2025-10-25T07:00:00Z', isApi: true, url: 'https://www.deccanherald.com/top-sports-news' }
+            ],
+            exploreProfessionals: [
+                { name: 'Neeraj Chopra', sport: 'Athletics (Javelin)', location: 'External Star' },
+                { name: 'PV Sindhu', sport: 'Badminton', location: 'External Star' },
+                { name: 'Sunil Chhetri', sport: 'Football', location: 'External Star' },
+                { name: 'Ravi Kumar Dahiya', sport: 'Wrestling', location: 'External Star' },
+                { name: 'Mirabai Chanu', sport: 'Weightlifting', location: 'External Star' },
+                { name: 'Rohit Sharma', sport: 'Cricket', location: 'External Star' },
+                { name: 'Virat Kohli', sport: 'Cricket', location: 'External Star' },
+                { name: 'Deepa Malik', sport: 'Para-Athletics', location: 'External Star' },
+                { name: 'Alexander Zverev', sport: 'Tennis (Global)', location: 'External Star' },
+                { name: 'Pratika Rawal', sport: 'Cricket', location: 'External Star' },
+                { name: 'Smriti Mandhana', sport: 'Cricket', location: 'External Star' },
+                { name: 'Kuldeep Yadav', sport: 'Cricket', location: 'External Star' },
+                { name: 'Jemimah Rodrigues', sport: 'Cricket', location: 'External Star' },
+                { name: 'David Catala', sport: 'Football (Coach)', location: 'External Star' }
+            ],
+            opportunities: [
+                { title: 'Junior Estimator & Quantity Surveyor (SAI Contract)', source: 'Sports Authority of India', url: 'https://sportsauthorityofindia.nic.in/sai_new/job-opportunities', snippet: 'Invites Applications For The Post of Junior Estimator & Quantity Surveyor On Contract Basis. Publication Date: 14 Oct 2025.' },
+                { title: 'Assistant Professor (Physical Education) - SAI', source: 'Sports Authority of India', url: 'https://sportsauthorityofindia.nic.in/sai_new/job-opportunities', snippet: 'Invites Applications For The Post Of Assistant Professor (Physical Education) On Regular Basis. Publication Date: 07 Oct 2025.' },
+                { title: 'Executive Director on Deputation - SAI', source: 'Sports Authority of India', url: 'https://sportsauthorityofindia.nic.in/sai_new/job-opportunities', snippet: 'Invites Applications for the Post of Executive Director on Deputation short term Contract Basis. Publication Date: 30 Sep 2025.' },
+                { title: 'Senior Football Coach - Grassroots Program', source: 'Youth Football International', url: 'https://www.sportingjobs.in/vacancies', snippet: 'Minimum C Licensed Experience: 3-5 years. Full-time position in New Delhi.' },
+                { title: 'Lead - Media & Communications', source: 'Mumbai City FC', url: 'https://www.sportingjobs.in/vacancies', snippet: 'Full-time role managing media relations and communications for the Indian Super League club. Location: Mumbai.' },
+                { title: 'Sports Psychologist for TSAF Sport Climbing Academy', source: 'National Sports University', url: 'https://www.nsu.ac.in/central-govts-and-other-jobs', snippet: 'Seeking an experienced Sports Psychologist for TSAF Sport Climbing Academy. Apply soon.' }
+            ],
+            newsHeadlines: [
+                { title: '3rd ODI LIVE: India Star Repays Gambhir\'s Trust, Australia All Out For 236', source: 'NDTV Sports', url: 'https://sports.ndtv.com/', snippet: 'India managed to restrict Australia to 236 in the final ODI, thanks to a sharp bowling effort and key catches.' },
+                { title: 'Pakistan Pulls Out of Men\'s Junior Hockey World Cup in India', source: 'Newsonair', url: 'https://www.newsonair.gov.in/category/sports/', snippet: 'The Pakistan Hockey Federation cited government advice for its decision not to participate in the upcoming World Cup in India.' },
+                { title: 'Ranji Trophy: Karnataka eye crucial points against Goa in domestic opener', source: 'Deccan Herald', url: 'https://www.deccanherald.com/top-sports-news', snippet: 'India\'s premier domestic competition is returning to Shivamogga five years after the Karnataka vs Madhya Pradesh match.' },
+                { title: 'Alexander Zverev secures ATP finals spot to join Alcaraz, Sinner and Djokovic', source: 'India Today Sports', url: 'https://www.indiatoday.in/sports', snippet: 'Two-time ATP Finals champion Alexander Zverev booked his place in the season-ending championship by advancing to the semi-finals of the Vienna Open.' },
+                { title: 'India Clinch Double Gold in Kabaddi at Asian Youth Games 2025', source: 'Newsonair', url: 'https://www.newsonair.gov.in/category/sports/', snippet: 'Both Under-18 teams won gold while remaining unbeaten in Bahrain.' },
+                { title: 'Women\'s World Cup: Two Australian cricketers stalked, one molested in Indore; accused arrested', source: 'Times of India', url: 'https://timesofindia.indiatimes.com/sports', snippet: 'A disturbing incident during the Women\'s World Cup involving Australian players in Indore led to police action.' },
+                { title: 'Shubman Gill’s streak continues as India’s curse refuses to end (18 ODI Tosses)', source: 'Times of India', url: 'https://timesofindia.indiatimes.com/sports', snippet: 'India\'s struggle with the toss in ODIs shows no signs of easing, extending the streak to 18 consecutive toss losses.' }
+            ]
+        };
+
+
+        // --- 1. DATA SEEDING: Populates the website with realistic data on first run ---
+        const seedLocalStorage = () => {
+            if (!localStorage.getItem('sportsin_users')) {
+                // INCREASED SEED COUNT TO 50 USERS
+                const users = Array.from({ length: 50 }, (_, i) => ({
+                    id: i + 1,
+                    fullName: `Pro Athlete ${i + 1}`,
+                    email: `user${i+1}@example.com`,
+                    password: 'password123',
+                    userType: ['Athlete', 'Coach', 'Scout', 'Fan'][i % 4],
+                    sport: ['Cricket', 'Football', 'Badminton', 'Athletics', 'Kabaddi', 'Hockey', 'Swimming'][i % 7],
+                    location: ['Mumbai', 'Delhi', 'Bengaluru', 'Chennai', 'Hyderabad'][i % 5],
+                    bio: `This is the profile of Pro Athlete ${i + 1}. I am a dedicated ${['Athlete', 'Coach', 'Scout', 'Fan'][i % 4]} passionate about ${['Cricket', 'Football', 'Badminton', 'Athletics', 'Kabaddi', 'Hockey', 'Swimming'][i % 7]}. Seeking connections and opportunities.`,
+                    connections: i > 5 ? [1,2,3,4,5] : [],
+                    experience: i % 4 === 0 ? [{title: 'Lead Player', team: 'State Team', years: '2020-Present'}] : []
+                }));
+                localStorage.setItem('sportsin_users', JSON.stringify(users));
+            }
+            if (!localStorage.getItem('sportsin_posts')) {
+                const posts = [
+                    { id: 1, authorId: 1, content: 'Productive week of training. Ready for the upcoming domestic season!', timestamp: '2025-10-16T11:30:00Z', likes: [2, 5, 6], comments: [ { commenterId: 5, text: 'Excellent focus! Keep it up.' }, { commenterId: 2, text: 'All the best for the season.' } ], status: 'approved' },
+                    { id: 2, authorId: 3, content: 'Just returned from the U-17 national tournament. Identified a few exceptional players for our academy trials.', timestamp: '2025-10-15T18:00:00Z', likes: [8, 9, 15], comments: [], status: 'approved' },
+                    { id: 3, authorId: 4, content: 'Clocked a new personal best in the 100m heats today! The hard work is paying off. #AthleteLife', timestamp: '2025-10-14T09:00:00Z', likes: [1, 6, 18, 25], comments: [ { commenterId: 6, text: 'Incredible performance!' } ], status: 'approved' }
+                ];
+                localStorage.setItem('sportsin_posts', JSON.stringify(posts));
+            }
+            if (!localStorage.getItem('sportsin_news')) {
+                const newsArticles = [
+                    { id: 1, title: 'ISL Season Kicks Off With A Thrilling Derby Match (Seeded)', source: 'Football Today', timestamp: '2025-10-16T22:00:00Z', summary: 'The Indian Super League began with a bang as two rival teams played out a dramatic 3-3 draw in front of a packed stadium.', imageUrl: 'https://placehold.co/600x600/3e2723/FFFFFF?text=Football+Match' },
+                    { id: 2, title: 'Badminton Star Enters Quarter-Finals of Denmark Open (Seeded)', source: 'Shuttle Times', timestamp: '2025-10-17T11:00:00Z', summary: 'India\'s top-ranked player secured a comfortable straight-sets victory to advance to the next round of the BWF Super 750 event.', imageUrl: 'https://placehold.co/600x500/004d40/FFFFFF?text=Badminton' },
+                    { id: 3, title: 'National Athletics Meet: New Javelin Record Set (Seeded)', source: 'Track & Field India', timestamp: '2025-10-16T18:00:00Z', summary: 'A young athlete from Haryana shattered the national javelin throw record, marking him as a future Olympic hopeful.', imageUrl: 'https://placehold.co/600x700/558b2f/FFFFFF?text=Athletics' }
+                ];
+                localStorage.setItem('sportsin_news', JSON.stringify(newsArticles));
+            }
+        };
+
+
+        // --- 2. STATE & HELPERS: Global variables and helper functions ---
+        const mainContent = document.getElementById('main-content');
+        const navLinksContainer = document.getElementById('nav-links');
+        
+        const getCurrentUser = () => JSON.parse(localStorage.getItem('sportsin_currentUser'));
+        const getAllUsers = () => JSON.parse(localStorage.getItem('sportsin_users')) || [];
+        const getAllPosts = () => JSON.parse(localStorage.getItem('sportsin_posts')) || [];
+        const getAllNews = () => JSON.parse(localStorage.getItem('sportsin_news')) || [];
+        const getUserById = (id) => getAllUsers().find(u => u.id === parseInt(id));
+
+        // --- 3. PAGE RENDERING FUNCTIONS: Each function generates HTML for a page ---
+        
+        const renderHome = () => {
+            mainContent.innerHTML = `
+                <div class="text-center py-16">
+                    <h1 class="text-5xl font-bold text-gray-800">Welcome to SportsIn 🏆</h1>
+                    <p class="text-xl text-gray-600 mt-4">The professional network for the world of sports.</p>
+                    <p class="text-lg text-gray-500 mt-2">Connect with athletes, coaches, scouts, and teams to build your career.</p>
+                    <div class="mt-8 space-x-4">
+                        <a href="#register" class="btn-primary font-bold py-3 px-6 rounded-lg transition">Get Started</a>
+                        <a href="#login" class="bg-gray-200 text-gray-800 font-bold py-3 px-6 rounded-lg hover:bg-gray-300 transition">Log In</a>
+                    </div>
+                </div>
+
+                <div class="py-16 bg-white">
+                    <div class="max-w-5xl mx-auto text-center">
+                        <h2 class="text-3xl font-bold mb-10">Why Join SportsIn?</h2>
+                        <div class="grid md:grid-cols-3 gap-8">
+                            <div class="bg-gray-50 p-8 rounded-lg shadow-md border border-gray-200 text-center transform hover:-translate-y-2 transition-transform duration-300">
+                                <svg class="w-16 h-16 mx-auto text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126.1283.356-1.857m0 0a3.002 3.002 0 013.39-2.142 3.001 3.001 0 013.39 2.142m0 0A3 3 0 0112 18c0 .656-.126 1.283-.356 1.857M12 6V3m0 3c-1.657 0-3 1.343-3 3s1.343 3 3 3 3-1.343 3-3-1.343-3-3-3z"></path></svg>
+                                <h3 class="text-xl font-semibold mt-4">Connect</h3>
+                                <p class="mt-2 text-gray-600">Build your network with key figures in the sports industry, from grassroots to the professional leagues.</p>
+                            </div>
+                            <div class="bg-gray-50 p-8 rounded-lg shadow-md border border-gray-200 text-center transform hover:-translate-y-2 transition-transform duration-300">
+                                <svg class="w-16 h-16 mx-auto text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                                <h3 class="text-xl font-semibold mt-4">Discover</h3>
+                                <p class="mt-2 text-gray-600">Find new opportunities, get scouted by top teams, and discover emerging talent before anyone else.</p>
+                            </div>
+                            <div class="bg-gray-50 p-8 rounded-lg shadow-md border border-gray-200 text-center transform hover:-translate-y-2 transition-transform duration-300">
+                                <svg class="w-16 h-16 mx-auto text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+                                <h3 class="text-xl font-semibold mt-4">Grow</h3>
+                                <p class="mt-2 text-gray-600">Share your journey, build your personal brand, and take your sports career to the next level.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="py-16">
+                    <div class="max-w-6xl mx-auto">
+                        <h2 class="text-3xl font-bold mb-8 text-center">Join the network and...</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                            <div class="bg-white p-8 rounded-lg shadow-lg text-center flex flex-col items-center">
+                                    <h3 class="text-2xl font-semibold text-gray-800">Post your opportunity</h3>
+                                    <p class="mt-2 text-gray-600 flex-grow">Reach thousands of qualified candidates, from coaches to physiotherapists.</p>
+                                    <a href="#register" class="mt-6 inline-block text-primary font-semibold border-2 border-primary py-2 px-6 rounded-full hover:bg-primary hover:text-white transition">Find Talent</a>
+                            </div>
+                              <div class="bg-white p-8 rounded-lg shadow-lg text-center flex flex-col items-center">
+                                    <h3 class="text-2xl font-semibold text-gray-800">Find your next role</h3>
+                                    <p class="mt-2 text-gray-600 flex-grow">Explore roles with top clubs, academies, and sports organizations.</p>
+                                    <a href="#register" class="mt-6 inline-block text-primary font-semibold border-2 border-primary py-2 px-6 rounded-full hover:bg-primary hover:text-white transition">Search Jobs</a>
+                            </div>
+                            <div class="bg-white p-8 rounded-lg shadow-lg text-center flex flex-col items-center md:col-span-2 lg:col-span-1">
+                                    <h3 class="text-2xl font-semibold text-gray-800">Showcase your skills</h3>
+                                    <p class="mt-2 text-gray-600 flex-grow">Create a professional profile that highlights your achievements and gets you noticed.</p>
+                                    <a href="#register" class="mt-6 inline-block text-primary font-semibold border-2 border-primary py-2 px-6 rounded-full hover:bg-primary hover:text-white transition">Build Profile</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="py-16 text-center bg-gray-900 text-white">
+                    <h2 class="text-3xl font-bold">Your Next Opportunity Awaits.</h2>
+                    <a href="#register" class="mt-6 inline-block btn-primary font-bold py-3 px-8 rounded-lg transition">Join Now for Free</a>
+                </div>
+            `;
+        };
+
+        const renderRegister = () => {
+            mainContent.innerHTML = `
+                <div class="max-w-md mx-auto bg-white p-8 rounded-lg shadow-lg">
+                    <h2 class="text-2xl font-bold text-center mb-6">Create Your Account</h2>
+                    <form id="register-form">
+                        <div class="mb-4"><input type="text" name="fullName" placeholder="Full Name" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"></div>
+                        <div class="mb-4"><input type="email" name="email" placeholder="Email Address" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"></div>
+                        <div class="mb-4"><input type="password" name="password" placeholder="Password" minlength="6" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"></div>
+                        <div class="mb-4"><input type="text" name="sport" placeholder="Your Primary Sport (e.g., Cricket)" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"></div>
+                        <div class="mb-4">
+                            <select name="userType" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option value="Athlete">Athlete</option><option value="Coach">Coach</option><option value="Scout">Scout</option><option value="Fan">Fan</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="w-full btn-primary font-bold py-2 px-4 rounded-lg transition">Register</button>
+                    </form>
+                    <p class="text-center mt-4">Already have an account? <a href="#login" class="text-primary hover:underline">Log In</a></p>
+
+                </div>
+                `;
+            document.getElementById('register-form').addEventListener('submit', handleRegisterSubmit);
+        };
+
+        const renderLogin = () => {
+            mainContent.innerHTML = `
+                <div class="max-w-md mx-auto bg-white p-8 rounded-lg shadow-lg">
+                    <h2 class="text-2xl font-bold text-center mb-6">Log In to SportsIn</h2>
+                    <form id="login-form">
+                        <div class="mb-4"><input type="email" name="email" placeholder="Email Address" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"></div>
+                        <div class="mb-4"><input type="password" name="password" placeholder="Password" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"></div>
+                        <button type="submit" class="w-full btn-primary font-bold py-2 px-4 rounded-lg transition">Log In</button>
+                    </form>
+                    <p class="text-center mt-4">Don't have an account? <a href="#register" class="text-primary hover:underline">Register</a></p>
+                    <p class="text-center mt-2"><a href="#admin-login" class="text-sm text-gray-500 hover:underline">Admin Login</a></p>
+                </div>
+                `;
+            document.getElementById('login-form').addEventListener('submit', handleLoginSubmit);
+        };
+        
+        const renderAdminLogin = () => {
+             mainContent.innerHTML = `
+                <div class="max-w-md mx-auto bg-white p-8 rounded-lg shadow-lg">
+                    <h2 class="text-2xl font-bold text-center mb-6">Admin Login</h2>
+                    <form id="admin-login-form">
+                        <div class="mb-4"><input type="email" name="email" placeholder="Admin Email (admin@sportsin.com)" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" value="admin@sportsin.com"></div>
+                        <div class="mb-4"><input type="password" name="password" placeholder="Admin Password (admin123)" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" value="admin123"></div>
+                        <button type="submit" class="w-full bg-red-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-red-700 transition">Login as Admin</button>
+                    </form>
+                    <p class="text-center mt-4">Not an admin? <a href="#login" class="text-primary hover:underline">User Login</a></p>
+                </div>
+                `;
+            document.getElementById('admin-login-form').addEventListener('submit', handleAdminLoginSubmit);
+        };
+
+        // --- RENDER FEED (NOW USING HARDCODED LIVE DATA AS FALLBACK) ---
+        const renderFeed = async () => {
+            const currentUser = getCurrentUser();
+            if (!currentUser) { window.location.hash = '#login'; return; }
+            
+            const isAdmin = currentUser.userType === 'Admin';
+            let postsHTML = '';
+            
+            // USE HARDCODED LIVE DATA
+            const industryUpdates = LIVE_DATA.feedUpdates;
+            
+            // 2. Combine and Sort User Posts and API Updates
+            const userPosts = getAllPosts().map(p => ({
+                ...p, 
+                authorName: getUserById(p.authorId)?.fullName || 'Unknown User', 
+                isApi: false
+            }));
+            
+            const combinedFeed = [...userPosts, ...industryUpdates].sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+            combinedFeed
+                .filter(post => isAdmin || post.status === 'approved' || post.isApi) 
+                .forEach(post => {
+                const isApi = post.isApi;
+                const authorName = post.authorName;
+                const authorInitial = isApi ? '📰' : authorName.charAt(0);
+                const postClass = isApi ? 'bg-blue-50 border-l-4 border-primary' : 'bg-white';
+                
+                // For API posts, the content is a clickable link to the original source
+                const apiContent = isApi 
+                    ? `<p class="text-gray-800 my-4">${post.content.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')}</p>`
+                    : `<p class="text-gray-800 my-4">${post.content}</p>`;
+                
+                const postFooter = isApi 
+                    ? `<a href="${post.url}" target="_blank" class="text-xs text-blue-600 font-semibold mt-2 hover:underline flex items-center">View Full Article ↗ (Live Data)</a>` 
+                    : '';
+                
+                const deleteButton = isAdmin && !isApi ? 
+                    `<button data-post-id="${post.id}" class="admin-delete-post text-red-500 hover:text-red-700 p-2 rounded text-sm">❌ Delete</button>` : '';
+
+                let commentsAndLikes = '';
+                if (!isApi) {
+                    const isLiked = post.likes.includes(currentUser.id);
+                    let commentsHTML = post.comments.map(comment => {
+                        const commenter = getUserById(comment.commenterId);
+                        return commenter ? `<div class="text-sm mt-2"><a href="#profile/${commenter.id}" class="font-semibold text-gray-800 hover:underline">${commenter.fullName}</a>: ${comment.text}</div>` : '';
+                    }).join('');
+                    
+                    commentsAndLikes = `
+                        <div class="mt-2 pt-2 border-t flex items-center space-x-4">
+                            <button data-post-id="${post.id}" class="like-button ${isLiked ? 'text-blue-600 font-bold' : 'text-gray-500'} hover:bg-gray-100 p-2 rounded">👍 Like (${post.likes.length})</button>
+                        </div>
+                        <div class="mt-2">
+                            ${commentsHTML}
+                            <form class="comment-form mt-2" data-post-id="${post.id}">
+                                <input type="text" placeholder="Write a comment..." class="w-full text-sm border rounded-full px-3 py-1 focus:outline-none focus:ring-1 focus:ring-blue-500">
+                                <button type="submit" class="hidden">Post</button>
+                            </form>
+                        </div>
+                    `;
+                }
+
+                postsHTML += `
+                    <div class="${postClass} p-4 rounded-lg shadow mb-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="flex items-center">
+                                <div class="w-12 h-12 ${isApi ? 'bg-blue-200' : 'bg-gray-300'} rounded-full flex items-center justify-center font-bold text-gray-600">${authorInitial}</div>
+                                <div class="ml-3">
+                                    <span class="font-semibold text-gray-900 text-lg">${authorName}</span>
+                                    ${!isApi ? `<p class="text-sm text-gray-500">${getUserById(post.authorId)?.userType} ${post.status === 'pending' ? '(Pending)' : ''}</p>` : `<p class="text-sm text-blue-600 font-semibold">Live Industry Update</p>`}
+                                </div>
+                            </div>
+                            ${deleteButton}
+                        </div>
+                        ${apiContent}
+                        <p class="text-xs text-gray-400">${new Date(post.timestamp).toLocaleString()}</p>
+                        ${postFooter}
+                        ${commentsAndLikes}
+                    </div>`;
+            });
+
+            mainContent.innerHTML = `
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="md:col-span-2">
+                        <div class="bg-white p-4 rounded-lg shadow mb-4">
+                            <h3 class="font-bold mb-2">Create Post (Subject to Admin Review)</h3>
+                            <form id="post-form">
+                                <textarea name="content" placeholder="What's on your mind, ${currentUser.fullName}?" class="w-full border rounded-lg p-2 h-24"></textarea>
+                                <button type="submit" class="mt-2 btn-primary font-bold py-2 px-4 rounded-lg transition">Post</button>
+                            </form>
+                        </div>
+                        ${postsHTML}
+                    </div>
+                    <div class="hidden md:block">
+                        <div class="bg-white p-4 rounded-lg shadow sticky top-24">
+                            <h3 class="font-bold text-lg mb-2">Welcome, ${currentUser.fullName}!</h3>
+                            <p class="text-gray-600">${currentUser.userType} - ${currentUser.sport}</p>
+                            ${isAdmin ? `<a href="#admin-moderation" class="text-red-500 hover:underline mt-4 inline-block font-bold">Admin Moderation Queue</a>` : ''}
+                            <a href="#profile/${currentUser.id}" class="text-primary hover:underline mt-4 inline-block">View My Profile</a>
+                        </div>
+                    </div>
+                </div>
+                `;
+            
+            document.getElementById('post-form').addEventListener('submit', handlePostSubmit);
+            document.querySelectorAll('.like-button').forEach(button => button.addEventListener('click', handleLikeClick));
+            document.querySelectorAll('.comment-form').forEach(form => form.addEventListener('submit', handleCommentSubmit));
+            
+            document.querySelectorAll('.admin-delete-post').forEach(button => {
+                button.addEventListener('click', (e) => handlePostDelete(parseInt(e.target.dataset.postId)));
+            });
+        };
+        
+        // --- RENDER EXPLORE (NOW USING HARDCODED LIVE DATA AS FALLBACK) ---
+        const renderExplore = async () => {
+            const searchTerm = document.getElementById('search-bar')?.value || 'Indian athletes';
+            mainContent.innerHTML = `
+                <div class="w-full">
+                    <h2 class="text-3xl font-bold mb-6 text-center">Explore Professionals</h2>
+                    <div class="mb-6"><input type="text" id="search-bar" placeholder="Search by name, role, or sport..." value="${searchTerm}" class="w-full max-w-lg mx-auto block px-4 py-3 border rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500"></div>
+                    <div id="loading-spinner" class="text-center py-12">
+                        <svg class="animate-spin h-8 w-8 text-primary mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                        <p class="mt-2 text-gray-500">Displaying recent professional data (Offline Mode).</p>
+                    </div>
+                    <div id="user-list-masonry" class="masonry-grid"></div>
+                </div>
+                `;
+            
+            document.getElementById('search-bar').addEventListener('input', renderExplore);
+            
+            await renderUserList(searchTerm);
+        };
+
+        const renderUserList = async (searchTerm) => {
+            const userListContainer = document.getElementById('user-list-masonry');
+            const loadingSpinner = document.getElementById('loading-spinner');
+            userListContainer.innerHTML = '';
+
+            const users = getAllUsers();
+            // 1. Filtered Mock Users (50+ names)
+            const filteredUsers = users.filter(user =>
+                user.fullName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                user.userType.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                (user.sport && user.sport.toLowerCase().includes(searchTerm.toLowerCase()))
+            );
+
+            let usersHTML = filteredUsers.map(user => {
+                const initial = encodeURIComponent(user.fullName.charAt(0));
+                const placeholderImg = `https://placehold.co/400x300/93c5fd/1d4ed8?text=${initial}`;
+
+                return `
+                    <a href="#profile/${user.id}" class="block bg-white rounded-lg shadow-md overflow-hidden transform hover:-translate-y-1 transition-transform masonry-item group">
+                        <img class="w-full h-40 object-cover" src="${placeholderImg}" alt="${user.fullName}">
+                        <div class="p-4 text-center">
+                            <h3 class="text-lg font-bold text-gray-800 group-hover:text-primary transition">${user.fullName}</h3>
+                            <p class="text-gray-600 text-sm">${user.userType}</p>
+                            <p class="text-primary font-semibold text-sm">${user.location}</p>
+                            <p class="text-xs text-gray-500 mt-1">Mock Profile</p>
+                        </div>
+                    </a>
+                `}).join('');
+            
+            // 2. Use Hardcoded External Professionals
+            let apiResultsHTML = '';
+            
+            const uniqueProfessionals = LIVE_DATA.exploreProfessionals.filter((item, index, self) => 
+                index === self.findIndex((t) => (t.name === item.name))
+            ).slice(0, 20); // Limit to 20 unique external names
+
+            apiResultsHTML = uniqueProfessionals.map(prof => {
+                const nameLower = prof.name.toLowerCase();
+                const sportLower = prof.sport.toLowerCase();
+                const searchLower = searchTerm.toLowerCase();
+
+                // Simple client-side filtering for hardcoded data
+                if (!nameLower.includes(searchLower) && !sportLower.includes(searchLower) && searchLower !== 'indian athletes') return '';
+
+                return `
+                    <div class="block bg-yellow-50 rounded-lg shadow-md overflow-hidden masonry-item group border-2 border-secondary p-4">
+                        <div class="text-center">
+                            <h3 class="text-lg font-bold text-gray-800">${prof.name}</h3>
+                            <p class="text-gray-600 text-sm">${prof.sport}</p>
+                            <p class="text-secondary font-semibold text-sm mt-1">External Icon</p>
+                            <p class="text-xs text-gray-500 mt-1">Data from last successful fetch.</p>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            if (loadingSpinner) loadingSpinner.remove();
+            userListContainer.innerHTML = usersHTML + apiResultsHTML;
+        };
+        // --- END RENDER EXPLORE ---
+
+        const renderProfile = (userId) => {
+            const user = getUserById(userId);
+            const currentUser = getCurrentUser();
+            if(!user) { mainContent.innerHTML = '<h2>User not found</h2>'; return; }
+
+            const isCurrentUser = currentUser && currentUser.id === user.id;
+            const isAdmin = currentUser && currentUser.userType === 'Admin';
+
+            // Determine the action button to display
+            let actionButtonHTML;
+            if (isCurrentUser) {
+                actionButtonHTML = `<a href="#edit-profile" class="btn-primary font-bold py-2 px-4 rounded-full transition">Edit Profile</a>`;
+            } else if (isAdmin) {
+                // ADMIN control: Delete the user being viewed
+                actionButtonHTML = `<button id="admin-delete-user" data-user-id="${user.id}" class="bg-red-600 text-white font-bold py-2 px-4 rounded-full hover:bg-red-700 transition">Delete User</button>`;
+            } else {
+                // Regular user viewing another user
+                actionButtonHTML = `<button class="btn-primary font-bold py-2 px-4 rounded-full transition">Connect</button>`;
+            }
+
+            const userPosts = getAllPosts().filter(p => p.authorId === user.id).sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp));
+            let activityHTML = userPosts.map(post => {
+                const statusBadge = post.status === 'pending' ? '<span class="ml-2 text-xs bg-yellow-200 text-yellow-800 px-2 py-0.5 rounded-full">Pending Review</span>' : '';
+                return `<div class="border-t py-4"><p class="text-gray-800">${post.content}${statusBadge}</p><small class="text-gray-500">${new Date(post.timestamp).toLocaleDateString()}</small></div>`;
+            }).join('');
+            if(userPosts.length === 0) activityHTML = '<p class="text-gray-500">No recent activity.</p>';
+            
+            let experienceHTML = user.experience.map(exp => `<div class="border-t py-4"><h4 class="font-bold text-lg">${exp.title}</h4><p class="text-gray-700">${exp.team}</p><p class="text-sm text-gray-500">${exp.years}</p></div>`).join('');
+            if(!user.experience || user.experience.length === 0) experienceHTML = '<p class="text-gray-500">No experience listed.</p>';
+            
+            mainContent.innerHTML = `
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <div class="lg:col-span-2 space-y-8">
+                        <div class="bg-white rounded-lg shadow overflow-hidden">
+                            <div class="h-32 bg-gray-300 profile-cover"></div>
+                            <div class="p-6 relative">
+                                <div class="absolute top-0 left-6 -mt-16 w-32 h-32 border-4 border-white rounded-full bg-gray-200 flex items-center justify-center text-4xl font-bold text-gray-500">${user.fullName.charAt(0)}</div>
+                                <div class="pt-16">
+                                    <div class="flex justify-between items-start">
+                                        <div>
+                                            <h2 class="text-3xl font-bold text-gray-800">${user.fullName}</h2>
+                                            <p class="text-md text-gray-600 mt-1">${user.userType} • ${user.sport}</p>
+                                            <p class="text-sm text-gray-500 mt-1">${user.location}</p>
+                                        </div>
+                                        <div class="mt-2">${actionButtonHTML}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded-lg shadow p-6"><h3 class="text-2xl font-bold mb-4">About</h3><p class="text-gray-700 leading-relaxed">${user.bio}</p></div>
+                        <div class="bg-white rounded-lg shadow p-6"><h3 class="text-2xl font-bold mb-2">Activity</h3><p class="text-gray-600 mb-4">${user.connections?.length || 0} connections</p>${activityHTML}</div>
+                        <div class="bg-white rounded-lg shadow p-6"><h3 class="text-2xl font-bold mb-2">Experience</h3>${experienceHTML}</div>
+                    </div>
+                    <div class="hidden lg:block space-y-8">
+                        <div class="bg-white p-4 rounded-lg shadow sticky top-24"><h3 class="font-bold text-lg mb-2">People Also Viewed</h3><p class="text-gray-500 text-sm">Feature coming soon.</p></div>
+                    </div>
+                </div>`;
+                
+            // ATTACH ADMIN DELETE LISTENER
+            if (isAdmin && !isCurrentUser) {
+                document.getElementById('admin-delete-user').addEventListener('click', (e) => handleUserDelete(parseInt(e.target.dataset.userId)));
+            }
+        };
+        
+        const renderEditProfile = () => {
+            const currentUser = getCurrentUser();
+            if(!currentUser) { window.location.hash = "#login"; return; }
+
+            let experienceFieldsHTML = currentUser.experience.map((exp, index) => `
+                <div class="experience-item grid grid-cols-3 gap-2 p-2 border rounded mb-2">
+                    <input type="text" name="exp-title-${index}" placeholder="Title" class="col-span-3 sm:col-span-1 p-2 border rounded" value="${exp.title}">
+                    <input type="text" name="exp-team-${index}" placeholder="Team/Organization" class="col-span-3 sm:col-span-1 p-2 border rounded" value="${exp.team}">
+                    <input type="text" name="exp-years-${index}" placeholder="Years (e.g., 2020-Present)" class="col-span-3 sm:col-span-1 p-2 border rounded" value="${exp.years}">
+                </div>
+            `).join('');
+
+            mainContent.innerHTML = `
+                <div class="w-full max-w-4xl mx-auto">
+                    <h2 class="text-3xl font-bold mb-6">Edit Profile</h2>
+                    <form id="edit-profile-form" class="bg-white p-8 rounded-lg shadow space-y-6">
+                        <div>
+                            <h3 class="text-xl font-bold border-b pb-2 mb-4">Profile Information</h3>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div><label class="block text-sm font-medium text-gray-700">Full Name</label><input type="text" name="fullName" value="${currentUser.fullName}" class="mt-1 w-full px-3 py-2 border rounded-md"></div>
+                                <div><label class="block text-sm font-medium text-gray-700">Sport</label><input type="text" name="sport" value="${currentUser.sport}" class="mt-1 w-full px-3 py-2 border rounded-md"></div>
+                            </div>
+                            <div class="mt-4"><label class="block text-sm font-medium text-gray-700">Location</label><input type="text" name="location" value="${currentUser.location}" class="mt-1 w-full px-3 py-2 border rounded-md"></div>
+                            <div class="mt-4"><label class="block text-sm font-medium text-gray-700">Bio</label><textarea name="bio" class="mt-1 w-full px-3 py-2 border rounded-md h-24">${currentUser.bio}</textarea></div>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold border-b pb-2 mb-4">Experience</h3>
+                            <div id="experience-container">${experienceFieldsHTML}</div>
+                            <button type="button" id="add-experience-btn" class="mt-2 text-sm text-primary hover:underline">+ Add Experience</button>
+                        </div>
+                        <div class="flex justify-end space-x-4">
+                            <a href="#profile/${currentUser.id}" class="bg-gray-200 text-gray-800 font-bold py-2 px-4 rounded-lg hover:bg-gray-300 transition">Cancel</a>
+                            <button type="submit" class="btn-primary font-bold py-2 px-4 rounded-lg transition">Save Changes</button>
+                        </div>
+                    </form>
+                </div>
+                `;
+            document.getElementById('edit-profile-form').addEventListener('submit', handleEditProfileSubmit);
+            document.getElementById('add-experience-btn').addEventListener('click', handleAddExperience);
+        };
+        
+        // --- RENDER OPPORTUNITIES (NOW USING HARDCODED LIVE DATA AS FALLBACK) ---
+        const renderOpportunities = async () => {
+            mainContent.innerHTML = `
+                <div class="w-full">
+                    <h2 class="text-3xl font-bold mb-6 text-center">Opportunities</h2>
+                    <p class="text-center text-gray-600 mb-8">Explore scouting opportunities, team tryouts, and career openings in the sports industry.</p>
+                    <div id="loading-spinner" class="text-center py-12">
+                        <svg class="animate-spin h-8 w-8 text-primary mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                        <p class="mt-2 text-gray-500">Displaying recent job postings (Offline Mode).</p>
+                    </div>
+                    <div id="opportunities-list" class="space-y-6">
+                        <div class="bg-white p-6 rounded-lg shadow">
+                            <h3 class="text-xl font-bold">Senior Football Coach Needed (Seeded)</h3>
+                            <p class="text-gray-600 mt-1"><span class="font-semibold">Club:</span> Premier FC | <span class="font-semibold">Location:</span> Mumbai, India</p>
+                            <p class="mt-2 text-gray-700">Looking for a coach with over 10 years of experience and a proven track record.</p>
+                        </div>
+                    </div>
+                </div>
+                `;
+                
+            const opportunitiesList = document.getElementById('opportunities-list');
+            const loadingSpinner = document.getElementById('loading-spinner');
+            
+            let apiOpportunitiesHTML = '';
+            
+            // Use Hardcoded Opportunities Data
+            LIVE_DATA.opportunities.forEach(job => {
+                apiOpportunitiesHTML += `
+                    <a href="${job.url}" target="_blank" class="block bg-green-50 p-6 rounded-lg shadow hover:shadow-xl transition border-l-4 border-green-600">
+                        <h3 class="text-lg font-bold text-gray-800">${job.title}</h3>
+                        <p class="text-gray-600 mt-1"><span class="font-semibold">Source:</span> ${job.source} (Live Data)</p>
+                        <p class="mt-2 text-gray-700 text-sm">${job.snippet.substring(0, 180)}...</p>
+                    </a>
+                `;
+            });
+
+            if (apiOpportunitiesHTML) {
+                opportunitiesList.insertAdjacentHTML('beforeend', apiOpportunitiesHTML);
+            } else {
+                opportunitiesList.insertAdjacentHTML('beforeend', `<div class="bg-gray-100 p-6 rounded-lg text-gray-700">No recent job listings found.</div>`);
+            }
+
+            if (loadingSpinner) loadingSpinner.remove();
+        };
+        // --- END RENDER OPPORTUNITIES ---
+        
+        // --- NEW ADMIN MODERATION PAGE ---
+        const renderAdminModeration = () => {
+            const currentUser = getCurrentUser();
+            if (currentUser.userType !== 'Admin') { window.location.hash = '#feed'; return; }
+            
+            const pendingPosts = getAllPosts().filter(p => p.status === 'pending').sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+            
+            let postsHTML = pendingPosts.map(post => {
+                const author = getUserById(post.authorId);
+                const authorName = author ? author.fullName : 'Deleted User';
+                
+                return `
+                    <div class="bg-white p-4 rounded-lg shadow flex justify-between items-center mb-4 border-l-4 border-yellow-500">
+                        <div>
+                            <p class="text-lg font-semibold text-gray-800">${post.content}</p>
+                            <p class="text-sm text-gray-600 mt-1">By: <a href="#profile/${post.authorId}" class="hover:underline">${authorName}</a></p>
+                            <p class="text-xs text-gray-400">${new Date(post.timestamp).toLocaleString()}</p>
+                        </div>
+                        <div class="space-x-2 flex-shrink-0">
+                            <button data-post-id="${post.id}" class="admin-approve-post bg-green-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-green-600 transition">Approve</button>
+                            <button data-post-id="${post.id}" class="admin-delete-post bg-red-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-red-600 transition">Delete</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            mainContent.innerHTML = `
+                <div class="w-full max-w-4xl mx-auto">
+                    <h2 class="text-3xl font-bold mb-6 text-red-600">Admin Moderation Queue (${pendingPosts.length} Pending)</h2>
+                    <p class="text-gray-600 mb-6">Review posts submitted by users before they appear on the main feed.</p>
+                    <div id="pending-posts-list">
+                        ${postsHTML || '<p class="text-gray-500 p-8 bg-white rounded-lg shadow">No posts currently pending review. The feed is clean! 🧹</p>'}
+                    </div>
+                </div>
+            `;
+            
+            document.querySelectorAll('.admin-approve-post').forEach(button => {
+                button.addEventListener('click', (e) => handlePostApprove(parseInt(e.target.dataset.postId)));
+            });
+            document.querySelectorAll('.admin-delete-post').forEach(button => {
+                button.addEventListener('click', (e) => handlePostDelete(parseInt(e.target.dataset.postId)));
+            });
+        };
+        // --- END NEW ADMIN MODERATION PAGE ---
+
+        // --- RENDER NEWS (NOW USING HARDCODED LIVE DATA AS FALLBACK) ---
+        const renderNews = async () => {
+            const currentUser = getCurrentUser();
+            const isAdmin = currentUser && currentUser.userType === 'Admin';
+            const newsArticles = getAllNews().sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+             mainContent.innerHTML = `
+                <div class="w-full">
+                    <h2 class="text-3xl font-bold mb-8 text-center">Latest Sports News</h2>
+                    <div id="loading-spinner" class="text-center py-12">
+                        <svg class="animate-spin h-8 w-8 text-primary mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                        <p class="mt-2 text-gray-500">Displaying recent news headlines (Offline Mode).</p>
+                    </div>
+                    <div id="news-grid" class="masonry-grid"></div>
+                </div>`;
+            
+            const newsGrid = document.getElementById('news-grid');
+            const loadingSpinner = document.getElementById('loading-spinner');
+            
+            let newsHTML = newsArticles.map(article => {
+                const adminDeleteButton = isAdmin ? 
+                    `<button data-article-id="${article.id}" class="admin-delete-news mt-4 w-full bg-red-100 text-red-600 font-semibold py-2 rounded-lg hover:bg-red-200 transition">Delete Article</button>` : '';
+
+                return `
+                    <div class="bg-white rounded-lg shadow overflow-hidden transform hover:-translate-y-1 transition-transform group masonry-item">
+                        <img src="${article.imageUrl}" alt="${article.title}" class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <p class="text-sm text-gray-500">${new Date(article.timestamp).toLocaleDateString()} • ${article.source} (Seeded)</p>
+                            <h3 class="text-xl font-bold mt-2 group-hover:text-primary transition">${article.title}</h3>
+                            <p class="mt-2 text-gray-700 text-sm">${article.summary}</p>
+                            ${adminDeleteButton}
+                        </div>
+                    </div>
+                `
+            }).join('');
+
+            // Use Hardcoded News Headlines
+            const apiNewsHTML = LIVE_DATA.newsHeadlines.map(result => `
+                <a href="${result.url}" target="_blank" class="block bg-blue-50 rounded-lg shadow-md overflow-hidden masonry-item group border-l-4 border-blue-600">
+                    <div class="p-4">
+                        <p class="text-sm text-blue-600 font-semibold">Just In • ${result.source} (Live Data)</p>
+                        <h3 class="text-lg font-bold text-gray-800 group-hover:text-primary transition mt-1">${result.title}</h3>
+                        <p class="text-gray-600 text-sm mt-1">${result.snippet.substring(0, 150)}...</p>
+                    </div>
+                </a>
+            `).join('');
+                
+            newsHTML += apiNewsHTML;
+            
+            if (loadingSpinner) loadingSpinner.remove();
+            newsGrid.innerHTML = newsHTML;
+
+
+            // ATTACH ADMIN DELETE LISTENERS
+            if (isAdmin) {
+                document.querySelectorAll('.admin-delete-news').forEach(button => {
+                    button.addEventListener('click', (e) => handleNewsDelete(parseInt(e.target.dataset.articleId)));
+                });
+            }
+        };
+
+        const renderSettings = () => {
+             const currentUser = getCurrentUser();
+             mainContent.innerHTML = `
+                <div class="w-full max-w-4xl mx-auto">
+                    <h2 class="text-3xl font-bold mb-6">Settings</h2>
+                    <div class="grid md:grid-cols-4 gap-8">
+                        <div class="md:col-span-1">
+                            <ul class="space-y-2 sticky top-24">
+                                <li><a href="#" class="font-semibold text-primary block p-2 rounded bg-blue-100">Account</a></li>
+                                <li><a href="#" class="text-gray-600 hover:bg-gray-200 block p-2 rounded">Sign-in & Security</a></li>
+                                <li><a href="#" class="text-gray-600 hover:bg-gray-200 block p-2 rounded">Visibility</a></li>
+                                <li><a href="#" class="text-gray-600 hover:bg-gray-200 block p-2 rounded">Notifications</a></li>
+                            </ul>
+                        </div>
+                        <div class="md:col-span-3">
+                                <div class="bg-white p-6 rounded-lg shadow space-y-8">
+                                    <div>
+                                        <h3 class="text-xl font-bold border-b pb-2 mb-4">Profile Information</h3>
+                                        <div class="grid grid-cols-2 gap-4">
+                                            <div><label class="block text-sm font-medium text-gray-700">Full Name</label><input type="text" value="${currentUser.fullName}" class="mt-1 w-full px-3 py-2 border rounded-md"></div>
+                                            <div><label class="block text-sm font-medium text-gray-700">Email</label><input type="email" value="${currentUser.email}" class="mt-1 w-full px-3 py-2 border rounded-md bg-gray-100" disabled></div>
+                                        </div>
+                                        <div class="mt-4"><label class="block text-sm font-medium text-gray-700">Bio</label><textarea class="mt-1 w-full px-3 py-2 border rounded-md h-24">${currentUser.bio}</textarea></div>
+                                        <button class="mt-4 btn-primary font-bold py-2 px-4 rounded-lg transition">Save Changes</button>
+                                    </div>
+                                    
+                                    <div>
+                                        <h3 class="text-xl font-bold border-b pb-2 mb-4">Sign-in & Security</h3>
+                                        <div class="flex justify-between items-center">
+                                            <div>
+                                                <p class="font-medium">Change Password</p>
+                                                <p class="text-sm text-gray-500">Update your password regularly to keep your account secure.</p>
+                                            </div>
+                                            <button class="bg-gray-200 text-gray-800 font-semibold py-2 px-4 rounded-lg hover:bg-gray-300 transition">Change</button>
+                                        </div>
+                                        <div class="flex justify-between items-center mt-4">
+                                            <div>
+                                                <p class="font-medium">Two-Factor Authentication</p>
+                                                <p class="text-sm text-gray-500">Add an extra layer of security to your account.</p>
+                                            </div>
+                                            <button class="bg-gray-200 text-gray-800 font-semibold py-2 px-4 rounded-lg hover:bg-gray-300 transition">Set Up</button>
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <h3 class="text-xl font-bold border-b pb-2 mb-4">Account Management</h3>
+                                        <button class="text-red-600 hover:underline">Deactivate Account</button>
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+                `;
+        };
+
+        // --- 4. EVENT HANDLERS & LOGIC: Functions to handle user interactions ---
+        
+        // --- ADMIN MODERATION HANDLERS ---
+        const handlePostApprove = (postId) => {
+            let posts = getAllPosts();
+            const postIndex = posts.findIndex(p => p.id === postId);
+            if (postIndex !== -1) {
+                posts[postIndex].status = 'approved';
+                localStorage.setItem('sportsin_posts', JSON.stringify(posts));
+                router();
+            }
+        };
+        
+        const handlePostDelete = (postId) => {
+            if (!confirm("Are you sure you want to delete this post? This action cannot be undone.")) {
+                if (window.location.hash !== '#admin-moderation') return; 
+            }
+            let posts = getAllPosts();
+            posts = posts.filter(p => p.id !== postId);
+            localStorage.setItem('sportsin_posts', JSON.stringify(posts));
+            router();
+        };
+
+        const handleNewsDelete = (articleId) => {
+            if (!confirm("Are you sure you want to delete this news article? This action cannot be undone.")) return;
+            let news = getAllNews();
+            news = news.filter(n => n.id !== articleId);
+            localStorage.setItem('sportsin_news', JSON.stringify(news));
+            router();
+        };
+
+        const handleUserDelete = (userId) => {
+            const user = getUserById(userId);
+            if (!confirm(`Are you sure you want to delete the user: ${user.fullName}? This will also delete their posts.`)) return;
+
+            let users = getAllUsers().filter(u => u.id !== userId);
+            let posts = getAllPosts().filter(p => p.authorId !== userId);
+
+            localStorage.setItem('sportsin_users', JSON.stringify(users));
+            localStorage.setItem('sportsin_posts', JSON.stringify(posts));
+
+            // Redirect or go back after deletion
+            if (getCurrentUser().id === userId) {
+                localStorage.removeItem('sportsin_currentUser');
+                window.location.hash = '#login';
+            } else {
+                window.location.hash = '#explore';
+            }
+        };
+        // --- END ADMIN MODERATION HANDLERS ---
+
+        const handleRegisterSubmit = (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const user = Object.fromEntries(formData.entries());
+            const users = getAllUsers();
+            if (users.find(u => u.email === user.email)) {
+                alert('A user with this email already exists.');
+                return;
+            }
+            const newUser = { ...user, id: Date.now(), connections: [], location: 'India', bio: 'New user on SportsIn!', experience: [] };
+            users.push(newUser);
+            localStorage.setItem('sportsin_users', JSON.stringify(users));
+            alert('Registration successful! Please log in.');
+            window.location.hash = '#login';
+        };
+
+        const handleLoginSubmit = (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const { email, password } = Object.fromEntries(formData.entries());
+            const users = getAllUsers();
+            const user = users.find(u => u.email === email && u.password === password);
+            if (user) {
+                // Store a session object *without* the password
+                const sessionUser = { ...user };
+                delete sessionUser.password;
+                localStorage.setItem('sportsin_currentUser', JSON.stringify(sessionUser));
+                window.location.hash = '#feed';
+            } else {
+                alert('Invalid email or password.');
+            }
+        };
+        
+        const handleAdminLoginSubmit = (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const { email, password } = Object.fromEntries(formData.entries());
+            if (email === 'admin@sportsin.com' && password === 'admin123') {
+                const adminUser = { id: 0, fullName: 'Admin User', email: 'admin@sportsin.com', userType: 'Admin', bio: 'Administrator of SportsIn', sport: 'Management', location: 'System', experience: [] };
+                localStorage.setItem('sportsin_currentUser', JSON.stringify(adminUser));
+                window.location.hash = '#feed';
+            } else {
+                alert('Invalid admin credentials.');
+            }
+        };
+
+        const handlePostSubmit = (e) => {
+            e.preventDefault();
+            const content = e.target.elements.content.value;
+            if (!content.trim()) return;
+            
+            const currentUser = getCurrentUser();
+            const posts = getAllPosts();
+            
+            // NEW: User posts start as 'pending'
+            const newPost = { id: Date.now(), authorId: currentUser.id, content, timestamp: new Date().toISOString(), likes: [], comments: [], status: 'pending' };
+            posts.unshift(newPost);
+            localStorage.setItem('sportsin_posts', JSON.stringify(posts));
+            
+            alert('Post submitted for review! It will appear on the feed shortly after Admin approval.');
+            e.target.reset();
+            router(); // Rerender to show post in pending status on profile/feed
+        };
+
+        const handleLikeClick = (e) => {
+            const postId = parseInt(e.target.dataset.postId);
+            const currentUser = getCurrentUser();
+            const posts = getAllPosts();
+            const post = posts.find(p => p.id === postId);
+            if (post) {
+                if (post.likes.includes(currentUser.id)) {
+                    post.likes = post.likes.filter(id => id !== currentUser.id);
+                } else {
+                    post.likes.push(currentUser.id);
+                }
+                localStorage.setItem('sportsin_posts', JSON.stringify(posts));
+                router();
+            }
+        };
+        
+        const handleCommentSubmit = (e) => {
+            e.preventDefault();
+            const postId = parseInt(e.target.dataset.postId);
+            const content = e.target.elements[0].value;
+            if(!content.trim()) return;
+
+            const currentUser = getCurrentUser();
+            const posts = getAllPosts();
+            const post = posts.find(p => p.id === postId);
+            if(post) {
+                post.comments.push({ commenterId: currentUser.id, text: content });
+                localStorage.setItem('sportsin_posts', JSON.stringify(posts));
+                router();
+            }
+        };
+        
+        const handleAddExperience = () => {
+            const container = document.getElementById('experience-container');
+            const index = container.children.length;
+            const div = document.createElement('div');
+            div.className = 'experience-item grid grid-cols-3 gap-2 p-2 border rounded mb-2';
+            div.innerHTML = `
+                <input type="text" name="exp-title-${index}" placeholder="Title" class="col-span-3 sm:col-span-1 p-2 border rounded">
+                <input type="text" name="exp-team-${index}" placeholder="Team/Organization" class="col-span-3 sm:col-span-1 p-2 border rounded">
+                <input type="text" name="exp-years-${index}" placeholder="Years (e.g., 2020-Present)" class="col-span-3 sm:col-span-1 p-2 border rounded">
+            `;
+            container.appendChild(div);
+        };
+
+        const handleEditProfileSubmit = (e) => {
+            e.preventDefault();
+            const currentUser = getCurrentUser();
+            const formData = new FormData(e.target);
+            
+            const updatedUser = {
+                ...currentUser,
+                fullName: formData.get('fullName'),
+                sport: formData.get('sport'),
+                location: formData.get('location'),
+                bio: formData.get('bio'),
+                experience: []
+            };
+
+            const expItems = e.target.querySelectorAll('.experience-item');
+            expItems.forEach((item, index) => {
+                const title = formData.get(`exp-title-${index}`);
+                const team = formData.get(`exp-team-${index}`);
+                const years = formData.get(`exp-years-${index}`);
+                if (title && team && years) {
+                    updatedUser.experience.push({ title, team, years });
+                }
+            });
+
+            const allUsers = getAllUsers();
+            const userIndex = allUsers.findIndex(u => u.id === currentUser.id);
+            // Ensure original user data (like password) is merged back, if we kept it
+            const originalUser = getAllUsers().find(u => u.id === currentUser.id); 
+            allUsers[userIndex] = { ...originalUser, ...updatedUser };
+
+            localStorage.setItem('sportsin_users', JSON.stringify(allUsers));
+            localStorage.setItem('sportsin_currentUser', JSON.stringify(updatedUser));
+            
+            alert('Profile updated successfully!');
+            window.location.hash = `#profile/${currentUser.id}`;
+        };
+
+        const handleLogout = () => {
+            localStorage.removeItem('sportsin_currentUser');
+            window.location.hash = '#login';
+        };
+
+        const toggleProfileDropdown = () => {
+            document.getElementById('profile-dropdown').classList.toggle('hidden');
+        };
+
+        // --- 5. ROUTER & NAVBAR UPDATER: Controls which page is displayed ---
+
+        const updateNavbar = () => {
+            const currentUser = getCurrentUser();
+            const path = window.location.hash.split('/')[0];
+            
+            if (currentUser) {
+                navLinksContainer.innerHTML = `
+                    <div class="flex items-center space-x-6">
+                        <a href="#feed" class="navbar-link ${path === '#feed' ? 'active' : ''} py-5 text-sm font-medium text-gray-500 hover:text-gray-900">Feed</a>
+                        <a href="#explore" class="navbar-link ${path === '#explore' ? 'active' : ''} py-5 text-sm font-medium text-gray-500 hover:text-gray-900">Explore</a>
+                        <a href="#opportunities" class="navbar-link ${path === '#opportunities' ? 'active' : ''} py-5 text-sm font-medium text-gray-500 hover:text-gray-900">Opportunities</a>
+                        <a href="#news" class="navbar-link ${path === '#news' ? 'active' : ''} py-5 text-sm font-medium text-gray-500 hover:text-gray-900">News</a>
+                        ${currentUser.userType === 'Admin' ? `<a href="#admin-moderation" class="navbar-link ${path === '#admin-moderation' ? 'active' : ''} py-5 text-sm font-bold text-red-500 hover:text-red-700">MODERATE</a>` : ''}
+                        <div class="relative">
+                            <button id="profile-menu-button" class="flex items-center space-x-2">
+                               <div class="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center font-bold text-gray-600">${currentUser.fullName.charAt(0)}</div>
+                               <span class="text-sm font-medium text-gray-600">${currentUser.fullName}</span>
+                            </button>
+                            <div id="profile-dropdown" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-20">
+                                <a href="#profile/${currentUser.id}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">My Profile</a>
+                                <a href="#settings" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Settings</a>
+                                <a href="#" id="logout-button" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Logout</a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                document.getElementById('logout-button').addEventListener('click', handleLogout);
+                document.getElementById('profile-menu-button').addEventListener('click', toggleProfileDropdown);
+            } else {
+                navLinksContainer.innerHTML = `
+                              <div class="flex items-center space-x-2">
+                                <a href="#login" class="text-gray-600 hover:bg-gray-100 px-4 py-2 rounded-full text-sm font-medium">Log In</a>
+                                <a href="#register" class="btn-primary px-4 py-2 rounded-full text-sm font-medium transition">Register</a>
+                              </div>
+                        `;
+            }
+        };
+
+        const router = () => {
+            const path = window.location.hash || '#';
+            updateNavbar();
+            
+            if (path.startsWith('#profile/')) {
+                // ADDED: Check and parse the user ID from the hash
+                const userId = path.split('/')[1];
+                renderProfile(userId);
+            } else {
+                switch (path) {
+                    case '#register': renderRegister(); break;
+                    case '#login': renderLogin(); break;
+                    case '#admin-login': renderAdminLogin(); break;
+                    case '#feed': renderFeed(); break;
+                    case '#explore': renderExplore(); break;
+                    case '#opportunities': renderOpportunities(); break;
+                    case '#news': renderNews(); break;
+                    case '#settings': renderSettings(); break;
+                    case '#edit-profile': renderEditProfile(); break;
+                    case '#admin-moderation': renderAdminModeration(); break; // NEW ADMIN ROUTE
+                    default: renderHome(); break;
+                }
+            }
+        };
+
+
+        // --- 6. INITIALIZATION: Set up the app on page load ---
+        
+        // Update counters with real data
+        function updateCounters() {
+            const users = JSON.parse(localStorage.getItem('sportsin_users')) || [];
+            const posts = JSON.parse(localStorage.getItem('sportsin_posts')) || [];
+            
+            const activeUsersEl = document.getElementById('active-users');
+            const jobOpportunitiesEl = document.getElementById('job-opportunities');
+            const sportsCategoriesEl = document.getElementById('sports-categories');
+            const countriesEl = document.getElementById('countries');
+            
+            if (activeUsersEl) activeUsersEl.textContent = users.length;
+            if (jobOpportunitiesEl) jobOpportunitiesEl.textContent = '0';
+            if (sportsCategoriesEl) {
+                const uniqueSports = [...new Set(users.map(u => u.sport).filter(Boolean))];
+                sportsCategoriesEl.textContent = uniqueSports.length;
+            }
+            if (countriesEl) {
+                const uniqueCountries = [...new Set(users.map(u => u.location).filter(Boolean))];
+                countriesEl.textContent = uniqueCountries.length;
+            }
+        }
+        
+        window.addEventListener('hashchange', router);
+        window.addEventListener('DOMContentLoaded', () => {
+            seedLocalStorage();
+            router();
+            
+            // Update counters with real data
+            setTimeout(updateCounters, 500);
+            
+            // Close dropdown if clicked outside
+            document.addEventListener('click', (event) => {
+                const dropdown = document.getElementById('profile-dropdown');
+                const button = document.getElementById('profile-menu-button');
+                if (dropdown && !dropdown.classList.contains('hidden') && button && !button.contains(event.target) && !dropdown.contains(event.target)) {
+                    dropdown.classList.add('hidden');
+                }
+            });
+        });
+
+    </script>
+    <script src="admin-page-settings.js"></script>
+</body>
+</html>

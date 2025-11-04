@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Posts - SportsIn</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-8">
+    <div class="max-w-4xl mx-auto">
+        <h1 class="text-2xl font-bold mb-6">Debug Posts Storage</h1>
+        
+        <div class="bg-white p-6 rounded-lg shadow mb-6">
+            <h2 class="text-lg font-semibold mb-4">Current Posts in localStorage</h2>
+            <button onclick="showPosts()" class="bg-blue-600 text-white px-4 py-2 rounded mb-4">Refresh Posts</button>
+            <button onclick="clearPosts()" class="bg-red-600 text-white px-4 py-2 rounded mb-4 ml-2">Clear All Posts</button>
+            <div id="posts-debug" class="space-y-4"></div>
+        </div>
+        
+        <div class="bg-white p-6 rounded-lg shadow">
+            <h2 class="text-lg font-semibold mb-4">Create Test Post</h2>
+            <textarea id="test-content" placeholder="Test post content..." class="w-full border rounded p-3 mb-3"></textarea>
+            <button onclick="createTestPost()" class="bg-green-600 text-white px-4 py-2 rounded">Create Test Post</button>
+        </div>
+    </div>
+
+    <script>
+        function showPosts() {
+            const posts = JSON.parse(localStorage.getItem('sportsin_posts')) || [];
+            const users = JSON.parse(localStorage.getItem('sportsin_users')) || [];
+            const container = document.getElementById('posts-debug');
+            
+            if (posts.length === 0) {
+                container.innerHTML = '<p class="text-gray-500">No posts found in localStorage</p>';
+                return;
+            }
+            
+            container.innerHTML = `
+                <p class="font-semibold mb-4">Total posts: ${posts.length}</p>
+                ${posts.map((post, index) => {
+                    const author = users.find(u => u.id === post.authorId);
+                    return `
+                        <div class="border rounded p-4 ${post.status === 'pending' ? 'bg-yellow-50 border-yellow-300' : 'bg-green-50 border-green-300'}">
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="font-semibold">Post #${index + 1} (ID: ${post.id})</h3>
+                                <span class="px-2 py-1 text-xs rounded ${post.status === 'pending' ? 'bg-yellow-200 text-yellow-800' : 'bg-green-200 text-green-800'}">${post.status}</span>
+                            </div>
+                            <p class="text-gray-700 mb-2">${post.content}</p>
+                            <div class="text-sm text-gray-500">
+                                <p>Author ID: ${post.authorId} (${author?.fullName || 'Unknown'})</p>
+                                <p>Created: ${new Date(post.timestamp).toLocaleString()}</p>
+                                <p>Attachments: ${post.attachments ? post.attachments.length : 0}</p>
+                            </div>
+                        </div>
+                    `;
+                }).join('')}
+            `;
+        }
+        
+        function clearPosts() {
+            if (confirm('Clear all posts from localStorage?')) {
+                localStorage.removeItem('sportsin_posts');
+                showPosts();
+            }
+        }
+        
+        function createTestPost() {
+            const content = document.getElementById('test-content').value.trim();
+            if (!content) {
+                alert('Please enter some content');
+                return;
+            }
+            
+            const currentUser = JSON.parse(localStorage.getItem('sportsin_currentUser'));
+            if (!currentUser) {
+                alert('No current user found. Please login first.');
+                return;
+            }
+            
+            const posts = JSON.parse(localStorage.getItem('sportsin_posts')) || [];
+            const newPost = {
+                id: Date.now(),
+                authorId: currentUser.id,
+                content: content,
+                attachments: [],
+                timestamp: new Date().toISOString(),
+                likes: [],
+                comments: [],
+                status: 'pending'
+            };
+            
+            posts.unshift(newPost);
+            localStorage.setItem('sportsin_posts', JSON.stringify(posts));
+            
+            document.getElementById('test-content').value = '';
+            alert('Test post created!');
+            showPosts();
+        }
+        
+        // Show posts on load
+        document.addEventListener('DOMContentLoaded', showPosts);
+    </script>
+</body>
+</html>

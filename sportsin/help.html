@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Help & Support - SportsIn</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="bg-white shadow-md fixed top-0 left-0 right-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <a href="index.html" class="text-2xl font-bold" style="color: #1e3a8a;">SportsIn</a>
+                <div class="flex items-center space-x-6">
+                    <!-- Navigation will be loaded by app.js -->
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pt-24 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="bg-white rounded-lg shadow-lg p-6">
+            <h1 class="text-3xl font-bold text-gray-900 mb-8">Help & Support</h1>
+            
+            <!-- Search Help -->
+            <div class="mb-8">
+                <input type="text" id="help-search" placeholder="Search for help..." class="w-full p-3 border rounded-lg">
+            </div>
+
+            <div class="space-y-8">
+                <!-- Getting Started -->
+                <div class="border-b pb-6">
+                    <h2 class="text-xl font-semibold mb-4">🚀 Getting Started</h2>
+                    <div class="space-y-3">
+                        <div class="help-item">
+                            <h3 class="font-medium text-blue-600 cursor-pointer" onclick="toggleAnswer(this)">How do I create my profile?</h3>
+                            <div class="hidden mt-2 text-gray-600">
+                                <p>1. Go to your profile page by clicking "View Profile"</p>
+                                <p>2. Click "Edit Profile" button</p>
+                                <p>3. Fill in your bio, sport, location, and other details</p>
+                                <p>4. Upload a profile photo by clicking the camera icon</p>
+                                <p>5. Click "Save Changes" to update your profile</p>
+                            </div>
+                        </div>
+                        <div class="help-item">
+                            <h3 class="font-medium text-blue-600 cursor-pointer" onclick="toggleAnswer(this)">How do I connect with other athletes?</h3>
+                            <div class="hidden mt-2 text-gray-600">
+                                <p>1. Go to the "Explore" page to discover athletes</p>
+                                <p>2. Click on any user's profile to view their details</p>
+                                <p>3. Click the "Connect" button on their profile</p>
+                                <p>4. Your connection request will be sent</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Posts & Content -->
+                <div class="border-b pb-6">
+                    <h2 class="text-xl font-semibold mb-4">📝 Posts & Content</h2>
+                    <div class="space-y-3">
+                        <div class="help-item">
+                            <h3 class="font-medium text-blue-600 cursor-pointer" onclick="toggleAnswer(this)">How do I create a post?</h3>
+                            <div class="hidden mt-2 text-gray-600">
+                                <p>1. Go to your Dashboard/Feed page</p>
+                                <p>2. Use the "Create Post" form at the top</p>
+                                <p>3. Write your content in the text area</p>
+                                <p>4. Click "Post" to submit (posts require admin approval)</p>
+                            </div>
+                        </div>
+                        <div class="help-item">
+                            <h3 class="font-medium text-blue-600 cursor-pointer" onclick="toggleAnswer(this)">Why isn't my post showing up?</h3>
+                            <div class="hidden mt-2 text-gray-600">
+                                <p>All posts require admin approval before they appear on the platform. This ensures quality content and prevents spam. Your post will be visible once an admin reviews and approves it.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Features -->
+                <div class="border-b pb-6">
+                    <h2 class="text-xl font-semibold mb-4">⚡ Platform Features</h2>
+                    <div class="space-y-3">
+                        <div class="help-item">
+                            <h3 class="font-medium text-blue-600 cursor-pointer" onclick="toggleAnswer(this)">What are the main features of SportsIn?</h3>
+                            <div class="hidden mt-2 text-gray-600">
+                                <p>• <strong>Feed:</strong> View and interact with posts from the community</p>
+                                <p>• <strong>Explore:</strong> Discover and connect with other athletes</p>
+                                <p>• <strong>Opportunities:</strong> Find and post job opportunities</p>
+                                <p>• <strong>Events:</strong> Create and join sports events</p>
+                                <p>• <strong>Training:</strong> Share and access training resources</p>
+                                <p>• <strong>Marketplace:</strong> Buy and sell sports equipment</p>
+                                <p>• <strong>News:</strong> Stay updated with sports news</p>
+                            </div>
+                        </div>
+                        <div class="help-item">
+                            <h3 class="font-medium text-blue-600 cursor-pointer" onclick="toggleAnswer(this)">How do notifications work?</h3>
+                            <div class="hidden mt-2 text-gray-600">
+                                <p>Click the bell icon in the navigation to view notifications. You'll receive notifications for connections, job opportunities, and other platform activities.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Privacy & Security -->
+                <div class="border-b pb-6">
+                    <h2 class="text-xl font-semibold mb-4">🔒 Privacy & Security</h2>
+                    <div class="space-y-3">
+                        <div class="help-item">
+                            <h3 class="font-medium text-blue-600 cursor-pointer" onclick="toggleAnswer(this)">How do I change my privacy settings?</h3>
+                            <div class="hidden mt-2 text-gray-600">
+                                <p>1. Click your profile picture in the navigation</p>
+                                <p>2. Select "Settings & Privacy"</p>
+                                <p>3. Adjust your privacy preferences</p>
+                                <p>4. Click "Save All Settings"</p>
+                            </div>
+                        </div>
+                        <div class="help-item">
+                            <h3 class="font-medium text-blue-600 cursor-pointer" onclick="toggleAnswer(this)">How do I delete my account?</h3>
+                            <div class="hidden mt-2 text-gray-600">
+                                <p>Go to Settings & Privacy → Data & Security → Delete Account. Note: This action cannot be undone.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact Support -->
+                <div class="pt-4">
+                    <h2 class="text-xl font-semibold mb-4">📞 Contact Support</h2>
+                    <div class="bg-blue-50 p-4 rounded-lg">
+                        <p class="text-gray-700 mb-4">Can't find what you're looking for? Get in touch with our support team:</p>
+                        <div class="space-y-2">
+                            <p><strong>Email:</strong> support@sportsin.com</p>
+                            <p><strong>Response Time:</strong> Within 24 hours</p>
+                        </div>
+                        <button onclick="contactSupport()" class="mt-4 bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">Send Support Message</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function toggleAnswer(element) {
+            const answer = element.nextElementSibling;
+            answer.classList.toggle('hidden');
+        }
+
+        function contactSupport() {
+            const message = prompt('Please describe your issue:');
+            if (message) {
+                alert('Thank you! Your support request has been submitted. We\'ll get back to you within 24 hours.');
+            }
+        }
+
+        // Search functionality
+        document.getElementById('help-search').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const helpItems = document.querySelectorAll('.help-item');
+            
+            helpItems.forEach(item => {
+                const text = item.textContent.toLowerCase();
+                if (text.includes(searchTerm)) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = searchTerm ? 'none' : 'block';
+                }
+            });
+        });
+    </script>
+    <script src="app.js"></script>
+</body>
+</html>

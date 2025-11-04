@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - SportsIn</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="bg-white shadow-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <a href="index.html" class="text-2xl font-bold" style="color: #1e3a8a;">SportsIn</a>
+                <a href="login.html" class="text-gray-600 hover:underline">Already have an account?</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-md w-full space-y-8">
+            <div class="card">
+                <div class="text-center mb-6">
+                    <h2 class="text-3xl font-bold" style="color: #1e3a8a;">Create Your Account</h2>
+                    <p class="mt-2 text-gray-600">Join the professional sports network</p>
+                </div>
+                <form class="space-y-4">
+                    <div>
+                        <input type="text" name="fullName" placeholder="Full Name" required 
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <input type="email" name="email" placeholder="Email Address" required 
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <input type="password" name="password" placeholder="Password" minlength="6" required 
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <input type="text" name="sport" placeholder="Your Primary Sport" required 
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <select name="userType" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="Athlete">Athlete</option>
+                            <option value="Coach">Coach</option>
+                            <option value="Scout">Scout</option>
+                            <option value="Fan">Fan</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="w-full btn-primary py-3 rounded-lg font-bold">Create Account</button>
+                </form>
+            </div>
+        </div>
+    </main>
+    <script>
+        // Register functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.querySelector('form');
+            if (form) {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const formData = new FormData(form);
+                    const fullName = formData.get('fullName');
+                    const email = formData.get('email');
+                    const password = formData.get('password');
+                    const sport = formData.get('sport');
+                    const userType = formData.get('userType');
+                    
+                    if (fullName && email && password && sport) {
+                        // Get existing users
+                        const users = JSON.parse(localStorage.getItem('sportsin_users')) || [];
+                        
+                        // Check if email already exists
+                        if (users.find(u => u.email === email)) {
+                            alert('A user with this email already exists.');
+                            return;
+                        }
+                        
+                        // Create new user
+                        const newUser = {
+                            id: Date.now(),
+                            fullName: fullName,
+                            email: email,
+                            password: password,
+                            sport: sport,
+                            userType: userType,
+                            location: 'Not specified',
+                            bio: `Hello! I'm ${fullName}, a ${userType} passionate about ${sport}.`,
+                            connections: []
+                        };
+                        
+                        // Add to users array
+                        users.push(newUser);
+                        localStorage.setItem('sportsin_users', JSON.stringify(users));
+                        
+                        alert('Registration successful! Please login with your credentials.');
+                        window.location.href = 'login.html';
+                    } else {
+                        alert('Please fill in all fields');
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

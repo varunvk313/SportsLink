@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Admin User - SportsIn</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-8">
+    <div class="max-w-2xl mx-auto">
+        <h1 class="text-2xl font-bold mb-6">Create Admin User</h1>
+        
+        <div class="bg-white p-6 rounded-lg shadow mb-6">
+            <button onclick="createAdminUser()" class="bg-red-600 text-white px-6 py-3 rounded-lg mb-4">Create Admin User</button>
+            <button onclick="showAllUsers()" class="bg-blue-600 text-white px-6 py-3 rounded-lg mb-4 ml-2">Show All Users</button>
+            
+            <div id="users-display" class="mt-6"></div>
+            
+            <div class="mt-6 p-4 bg-gray-50 rounded">
+                <h3 class="font-bold mb-2">Admin Login Details:</h3>
+                <p>Email: admin@sportsin.com</p>
+                <p>Password: admin123</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function createAdminUser() {
+            const users = JSON.parse(localStorage.getItem('sportsin_users')) || [];
+            
+            // Check if admin already exists
+            const existingAdmin = users.find(u => u.email === 'admin@sportsin.com');
+            if (existingAdmin) {
+                alert('Admin user already exists!');
+                showAllUsers();
+                return;
+            }
+            
+            const adminUser = {
+                id: Date.now(),
+                fullName: 'Admin User',
+                email: 'admin@sportsin.com',
+                password: 'admin123',
+                userType: 'Administrator',
+                sport: 'Management',
+                location: 'System',
+                isAdmin: true,
+                connections: []
+            };
+            
+            users.push(adminUser);
+            localStorage.setItem('sportsin_users', JSON.stringify(users));
+            
+            alert('Admin user created! You can now login with admin@sportsin.com / admin123');
+            showAllUsers();
+        }
+        
+        function showAllUsers() {
+            const users = JSON.parse(localStorage.getItem('sportsin_users')) || [];
+            const display = document.getElementById('users-display');
+            
+            if (users.length === 0) {
+                display.innerHTML = '<p class="text-gray-500">No users found</p>';
+                return;
+            }
+            
+            display.innerHTML = `
+                <h3 class="font-bold mb-4">All Users (${users.length})</h3>
+                ${users.map(user => `
+                    <div class="border rounded p-4 mb-3 ${user.isAdmin ? 'bg-red-50 border-red-300' : 'bg-blue-50 border-blue-300'}">
+                        <div class="flex justify-between items-start mb-2">
+                            <h4 class="font-semibold">${user.fullName}</h4>
+                            <span class="px-2 py-1 text-xs rounded ${user.isAdmin ? 'bg-red-200 text-red-800' : 'bg-blue-200 text-blue-800'}">${user.isAdmin ? 'ADMIN' : 'USER'}</span>
+                        </div>
+                        <div class="text-sm text-gray-600">
+                            <p>Email: ${user.email}</p>
+                            <p>Type: ${user.userType}</p>
+                            <p>Sport: ${user.sport}</p>
+                            <p>ID: ${user.id}</p>
+                        </div>
+                    </div>
+                `).join('')}
+            `;
+        }
+        
+        // Show users on load
+        document.addEventListener('DOMContentLoaded', showAllUsers);
+    </script>
+</body>
+</html>

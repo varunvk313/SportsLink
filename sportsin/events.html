@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sports Events - SportsIn</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="bg-white shadow-md fixed top-0 left-0 right-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <a href="index.html" class="text-2xl font-bold" style="color: #1e3a8a;">SportsIn</a>
+                <div class="flex items-center space-x-6">
+                    <a href="dashboard.html" class="navbar-link py-5 text-sm font-medium text-gray-500 hover:text-gray-900">Feed</a>
+                    <a href="explore.html" class="navbar-link py-5 text-sm font-medium text-gray-500 hover:text-gray-900">Explore</a>
+                    <a href="opportunities.html" class="navbar-link py-5 text-sm font-medium text-gray-500 hover:text-gray-900">Jobs</a>
+                    <a href="events.html" class="navbar-link active py-5 text-sm font-medium text-gray-500 hover:text-gray-900">Events</a>
+                    <a href="training.html" class="navbar-link py-5 text-sm font-medium text-gray-500 hover:text-gray-900">Training</a>
+                    <a href="news.html" class="navbar-link py-5 text-sm font-medium text-gray-500 hover:text-gray-900">News</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pt-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div class="lg:col-span-1">
+                <div class="card sticky top-24">
+                    <h3 class="text-xl font-bold mb-4" style="color: #1e3a8a;">Create Event</h3>
+                    <form id="event-form" class="space-y-4">
+                        <input type="text" placeholder="Event Name" required class="w-full px-4 py-3 border rounded-lg">
+                        <select class="w-full px-4 py-3 border rounded-lg">
+                            <option value="">Select Sport</option>
+                            <option value="Football">Football</option>
+                            <option value="Basketball">Basketball</option>
+                            <option value="Tennis">Tennis</option>
+                            <option value="Cricket">Cricket</option>
+                            <option value="Swimming">Swimming</option>
+                            <option value="Athletics">Athletics</option>
+                            <option value="Rugby">Rugby</option>
+                            <option value="Cycling">Cycling</option>
+                        </select>
+                        <input type="date" required class="w-full px-4 py-3 border rounded-lg">
+                        <input type="time" required class="w-full px-4 py-3 border rounded-lg">
+                        <input type="text" placeholder="Location" required class="w-full px-4 py-3 border rounded-lg">
+                        <textarea rows="3" placeholder="Event Description..." required class="w-full px-4 py-3 border rounded-lg"></textarea>
+                        <select class="w-full px-4 py-3 border rounded-lg">
+                            <option value="Tournament">Tournament</option>
+                            <option value="Training">Training Session</option>
+                            <option value="Match">Match/Game</option>
+                            <option value="Workshop">Workshop</option>
+                            <option value="Tryout">Tryout</option>
+                        </select>
+                        <button type="submit" class="w-full btn-primary py-3 rounded-lg font-bold">Create Event</button>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="lg:col-span-2">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold" style="color: #1e3a8a;">Upcoming Sports Events</h2>
+                    <select id="sport-filter" class="px-4 py-2 border rounded-lg">
+                        <option value="">All Sports</option>
+                        <option value="Football">Football</option>
+                        <option value="Basketball">Basketball</option>
+                        <option value="Tennis">Tennis</option>
+                        <option value="Cricket">Cricket</option>
+                    </select>
+                </div>
+                
+                <div id="events-container">
+                    <!-- Events will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            loadEvents();
+            
+            document.getElementById('event-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const currentUser = JSON.parse(localStorage.getItem('sportsin_currentUser'));
+                if (!currentUser) {
+                    alert('Please login to create events');
+                    return;
+                }
+                
+                const formData = new FormData(e.target);
+                const event = {
+                    id: Date.now(),
+                    name: e.target.querySelector('input[placeholder="Event Name"]').value,
+                    sport: e.target.querySelector('select').value,
+                    date: e.target.querySelector('input[type="date"]').value,
+                    time: e.target.querySelector('input[type="time"]').value,
+                    location: e.target.querySelector('input[placeholder="Location"]').value,
+                    description: e.target.querySelector('textarea').value,
+                    type: e.target.querySelectorAll('select')[1].value,
+                    organizer: currentUser.fullName,
+                    organizerId: currentUser.id,
+                    attendees: [],
+                    timestamp: new Date().toISOString()
+                };
+                
+                const events = JSON.parse(localStorage.getItem('sportsin_events')) || [];
+                events.unshift(event);
+                localStorage.setItem('sportsin_events', JSON.stringify(events));
+                
+                alert('Event created successfully!');
+                e.target.reset();
+                loadEvents();
+            });
+            
+            document.getElementById('sport-filter').addEventListener('change', loadEvents);
+        });
+        
+        function loadEvents() {
+            const events = JSON.parse(localStorage.getItem('sportsin_events')) || [];
+            const filter = document.getElementById('sport-filter').value;
+            const container = document.getElementById('events-container');
+            
+            const filteredEvents = filter ? events.filter(e => e.sport === filter) : events;
+            
+            if (filteredEvents.length === 0) {
+                container.innerHTML = `
+                    <div class="card text-center py-8">
+                        <h3 class="text-xl font-semibold text-gray-600 mb-2">No events found</h3>
+                        <p class="text-gray-500">Be the first to organize a sports event!</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = filteredEvents.map(event => {
+                const eventDate = new Date(event.date + 'T' + event.time);
+                const isUpcoming = eventDate > new Date();
+                
+                return `
+                    <div class="card mb-6 ${!isUpcoming ? 'opacity-75' : ''}">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h3 class="text-xl font-bold mb-2">${event.name}</h3>
+                                <div class="flex items-center space-x-4 text-sm text-gray-600 mb-2">
+                                    <span>🏆 ${event.sport}</span>
+                                    <span>📅 ${new Date(event.date).toLocaleDateString()}</span>
+                                    <span>⏰ ${event.time}</span>
+                                    <span>📍 ${event.location}</span>
+                                </div>
+                                <p class="text-gray-700 mb-3">${event.description}</p>
+                                <p class="text-sm text-gray-500">Organized by ${event.organizer}</p>
+                            </div>
+                            <span class="px-3 py-1 text-xs rounded-full ${getTypeColor(event.type)}">${event.type}</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-500">${event.attendees.length} attending</span>
+                            <button onclick="attendEvent(${event.id})" class="btn-primary px-4 py-2 rounded-lg text-sm" ${!isUpcoming ? 'disabled' : ''}>
+                                ${!isUpcoming ? 'Event Passed' : 'Attend Event'}
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        function getTypeColor(type) {
+            const colors = {
+                'Tournament': 'bg-red-100 text-red-800',
+                'Training': 'bg-blue-100 text-blue-800',
+                'Match': 'bg-green-100 text-green-800',
+                'Workshop': 'bg-purple-100 text-purple-800',
+                'Tryout': 'bg-yellow-100 text-yellow-800'
+            };
+            return colors[type] || 'bg-gray-100 text-gray-800';
+        }
+        
+        function attendEvent(eventId) {
+            const currentUser = JSON.parse(localStorage.getItem('sportsin_currentUser'));
+            if (!currentUser) {
+                alert('Please login to attend events');
+                return;
+            }
+            
+            const events = JSON.parse(localStorage.getItem('sportsin_events')) || [];
+            const eventIndex = events.findIndex(e => e.id === eventId);
+            
+            if (eventIndex !== -1) {
+                if (!events[eventIndex].attendees.includes(currentUser.id)) {
+                    events[eventIndex].attendees.push(currentUser.id);
+                    localStorage.setItem('sportsin_events', JSON.stringify(events));
+                    alert('You are now attending this event!');
+                    loadEvents();
+                } else {
+                    alert('You are already attending this event!');
+                }
+            }
+        }
+    </script>
+    <script src="app.js"></script>
+</body>
+</html>

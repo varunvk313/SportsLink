@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings & Privacy - SportsIn</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="bg-white shadow-md fixed top-0 left-0 right-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <a href="index.html" class="text-2xl font-bold" style="color: #1e3a8a;">SportsIn</a>
+                <div class="flex items-center space-x-6">
+                    <!-- Navigation will be loaded by app.js -->
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pt-24 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="bg-white rounded-lg shadow-lg p-6">
+            <h1 class="text-3xl font-bold text-gray-900 mb-8">Settings & Privacy</h1>
+            
+            <div class="space-y-8">
+                <!-- Account Settings -->
+                <div class="border-b pb-6">
+                    <h2 class="text-xl font-semibold mb-4">Account Settings</h2>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                            <input type="email" id="email-setting" class="w-full p-3 border rounded-lg" readonly>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
+                            <input type="text" id="name-setting" class="w-full p-3 border rounded-lg">
+                        </div>
+                        <button onclick="updateAccount()" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">Update Account</button>
+                    </div>
+                </div>
+
+                <!-- Privacy Settings -->
+                <div class="border-b pb-6">
+                    <h2 class="text-xl font-semibold mb-4">Privacy Settings</h2>
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <span>Profile Visibility</span>
+                            <select id="profile-visibility" class="p-2 border rounded">
+                                <option value="public">Public</option>
+                                <option value="connections">Connections Only</option>
+                                <option value="private">Private</option>
+                            </select>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span>Show Email to Others</span>
+                            <input type="checkbox" id="show-email" class="toggle">
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span>Allow Connection Requests</span>
+                            <input type="checkbox" id="allow-connections" class="toggle" checked>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Notification Settings -->
+                <div class="border-b pb-6">
+                    <h2 class="text-xl font-semibold mb-4">Notification Settings</h2>
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <span>Email Notifications</span>
+                            <input type="checkbox" id="email-notifications" class="toggle" checked>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span>Connection Notifications</span>
+                            <input type="checkbox" id="connection-notifications" class="toggle" checked>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span>Job Opportunity Alerts</span>
+                            <input type="checkbox" id="job-notifications" class="toggle" checked>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Data & Security -->
+                <div class="border-b pb-6">
+                    <h2 class="text-xl font-semibold mb-4">Data & Security</h2>
+                    <div class="space-y-4">
+                        <button onclick="changePassword()" class="bg-gray-600 text-white px-6 py-2 rounded-lg hover:bg-gray-700">Change Password</button>
+                        <button onclick="downloadData()" class="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700">Download My Data</button>
+                        <button onclick="deleteAccount()" class="bg-red-600 text-white px-6 py-2 rounded-lg hover:bg-red-700">Delete Account</button>
+                    </div>
+                </div>
+
+                <!-- Save Settings -->
+                <div class="pt-4">
+                    <button onclick="saveSettings()" class="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 font-semibold">Save All Settings</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            loadSettings();
+        });
+
+        function loadSettings() {
+            const currentUser = JSON.parse(localStorage.getItem('sportsin_currentUser'));
+            if (!currentUser) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            document.getElementById('email-setting').value = currentUser.email;
+            document.getElementById('name-setting').value = currentUser.fullName;
+            
+            // Load privacy settings
+            const settings = JSON.parse(localStorage.getItem('sportsin_settings_' + currentUser.id)) || {};
+            document.getElementById('profile-visibility').value = settings.profileVisibility || 'public';
+            document.getElementById('show-email').checked = settings.showEmail || false;
+            document.getElementById('allow-connections').checked = settings.allowConnections !== false;
+            document.getElementById('email-notifications').checked = settings.emailNotifications !== false;
+            document.getElementById('connection-notifications').checked = settings.connectionNotifications !== false;
+            document.getElementById('job-notifications').checked = settings.jobNotifications !== false;
+        }
+
+        function updateAccount() {
+            const currentUser = JSON.parse(localStorage.getItem('sportsin_currentUser'));
+            const newName = document.getElementById('name-setting').value;
+            
+            if (newName.trim()) {
+                const users = JSON.parse(localStorage.getItem('sportsin_users')) || [];
+                const userIndex = users.findIndex(u => u.id === currentUser.id);
+                
+                if (userIndex !== -1) {
+                    users[userIndex].fullName = newName;
+                    localStorage.setItem('sportsin_users', JSON.stringify(users));
+                    localStorage.setItem('sportsin_currentUser', JSON.stringify(users[userIndex]));
+                    alert('Account updated successfully!');
+                }
+            }
+        }
+
+        function saveSettings() {
+            const currentUser = JSON.parse(localStorage.getItem('sportsin_currentUser'));
+            const settings = {
+                profileVisibility: document.getElementById('profile-visibility').value,
+                showEmail: document.getElementById('show-email').checked,
+                allowConnections: document.getElementById('allow-connections').checked,
+                emailNotifications: document.getElementById('email-notifications').checked,
+                connectionNotifications: document.getElementById('connection-notifications').checked,
+                jobNotifications: document.getElementById('job-notifications').checked
+            };
+            
+            localStorage.setItem('sportsin_settings_' + currentUser.id, JSON.stringify(settings));
+            alert('Settings saved successfully!');
+        }
+
+        function changePassword() {
+            const newPassword = prompt('Enter new password:');
+            if (newPassword && newPassword.length >= 6) {
+                const currentUser = JSON.parse(localStorage.getItem('sportsin_currentUser'));
+                const users = JSON.parse(localStorage.getItem('sportsin_users')) || [];
+                const userIndex = users.findIndex(u => u.id === currentUser.id);
+                
+                if (userIndex !== -1) {
+                    users[userIndex].password = newPassword;
+                    localStorage.setItem('sportsin_users', JSON.stringify(users));
+                    alert('Password changed successfully!');
+                }
+            } else {
+                alert('Password must be at least 6 characters long.');
+            }
+        }
+
+        function downloadData() {
+            const currentUser = JSON.parse(localStorage.getItem('sportsin_currentUser'));
+            const posts = JSON.parse(localStorage.getItem('sportsin_posts')) || [];
+            const userPosts = posts.filter(p => p.authorId === currentUser.id);
+            
+            const userData = {
+                profile: currentUser,
+                posts: userPosts,
+                exportDate: new Date().toISOString()
+            };
+            
+            const dataStr = JSON.stringify(userData, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'sportsin_data.json';
+            link.click();
+        }
+
+        function deleteAccount() {
+            if (confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+                const currentUser = JSON.parse(localStorage.getItem('sportsin_currentUser'));
+                const users = JSON.parse(localStorage.getItem('sportsin_users')) || [];
+                const updatedUsers = users.filter(u => u.id !== currentUser.id);
+                
+                localStorage.setItem('sportsin_users', JSON.stringify(updatedUsers));
+                localStorage.removeItem('sportsin_currentUser');
+                localStorage.removeItem('sportsin_settings_' + currentUser.id);
+                
+                alert('Account deleted successfully.');
+                window.location.href = 'index.html';
+            }
+        }
+    </script>
+    <script src="app.js"></script>
+</body>
+</html>
